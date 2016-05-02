@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -13,4 +12,27 @@
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::auth();
+
+Route::get('/home', 'HomeController@index');
+
+//profile
+Route::get('/profile', 'ProfileController@index');
+Route::post('/profile/update', 'ProfileController@update');
+
+//user manage
+Route::get('/usermanage', 'UserManageController@index');
+Route::post('/usermanage/student/update', 'UserManageController@studentUpdate');
+Route::get('/usermanage/student/delete/{id}', 'UserManageController@studentDelete');
+Route::post('/usermanage/student/create', 'UserManageController@studentCreate');
+
+//api
+Route::group(['prefix' => 'api'], function () {
+    //user
+    Route::resource('usermanage', 'UserManageController@show');
+    Route::resource('usermanage/delete', 'UserManageController@destroy');
+    //paper
+    Route::resource('paper/delete', 'PaperController@destroy');
 });

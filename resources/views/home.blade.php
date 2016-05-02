@@ -3,7 +3,9 @@
 @section('content')
     <div class="container">
         <div class="row jumbotron">
-            欢迎您
+            <div class="col-md-10 col-md-offset-1">
+                您已经登录
+            </div>
         </div>
     </div>
 @endsection
