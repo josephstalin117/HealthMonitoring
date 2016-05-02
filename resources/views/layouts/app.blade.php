@@ -76,6 +76,7 @@
                     <li><a href="{{ url('/login') }}">登陆</a></li>
                     <li><a href="{{ url('/register') }}">注册</a></li>
                 @else
+                    <li><a href="{{ url('/profile') }}">修改个人资料</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                            aria-expanded="false">
@@ -83,7 +84,6 @@
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{ url('/profile') }}">修改个人资料</a></li>
                             <li><a href="{{ url('/changepwd') }}">修改密码</a></li>
                             <li><a href="{{ url('/logout') }}">登出</a></li>
                         </ul>

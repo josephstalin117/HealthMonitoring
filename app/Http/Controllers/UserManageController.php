@@ -29,9 +29,9 @@ class UserManageController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $students = User::where('role', 2)->orderBy('created_at')->get();
+        $users = User::where('role', 1)->orderBy('created_at')->get();
         return view('manage.users', [
-            'students' => $students,
+            'users' => $users,
         ]);
     }
 
@@ -105,7 +105,7 @@ class UserManageController extends Controller {
         $user->profile->save();
         $request->session()->flash('success', '更新成功');
 
-        return redirect('/usermanage/student');
+        return redirect('/usermanage');
     }
 
     public function delete($id) {
@@ -115,7 +115,7 @@ class UserManageController extends Controller {
         $user->delete();
 
 
-        return redirect('/usermanage/student');
+        return redirect('/usermanage');
     }
 
     public function create(Request $request) {
@@ -133,7 +133,7 @@ class UserManageController extends Controller {
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' => bcrypt($request->input('password')),
-            'role' => Config::get('constants.ROLE_STUDENT'),
+            'role' => Config::get('constants.ROLE_USER'),
         ]);
 
         $user->profile()->save(new Profile());
@@ -144,7 +144,7 @@ class UserManageController extends Controller {
         $user->profile->save();
 
         $request->session()->flash('success', '新增成功');
-        return redirect('/usermanage/student');
+        return redirect('/usermanage');
     }
 
 }

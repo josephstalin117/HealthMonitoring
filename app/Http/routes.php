@@ -24,9 +24,9 @@ Route::post('/profile/update', 'ProfileController@update');
 
 //user manage
 Route::get('/usermanage', 'UserManageController@index');
-Route::post('/usermanage/student/update', 'UserManageController@studentUpdate');
-Route::get('/usermanage/student/delete/{id}', 'UserManageController@studentDelete');
-Route::post('/usermanage/student/create', 'UserManageController@studentCreate');
+Route::post('/usermanage/update', 'UserManageController@update');
+Route::get('/usermanage/delete/{id}', 'UserManageController@delete');
+Route::post('/usermanage/create', 'UserManageController@create');
 
 //api
 Route::group(['prefix' => 'api'], function () {
