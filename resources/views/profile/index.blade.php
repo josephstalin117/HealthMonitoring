@@ -12,13 +12,13 @@
                         <div class="form-group">
                             <label for="nickname">真实姓名</label>
                             <input type="text" class="form-control" id="nickname" name="nickname"
-                                   placeholder="输入您的姓名"
+                                   placeholder="输入您的姓名" maxlength="5"
                                    value="{{$profile->nickname}}">
                         </div>
                         <div class="form-group">
                             <label for="telephone">手机</label>
-                            <input type="number" class="form-control" id="telephone" name="telephone"
-                                   placeholder="请输入您的手机号" value="{{$profile->telephone}}">
+                            <input type="text" class="form-control" id="telephone" name="telephone"
+                                   placeholder="请输入您的手机号" required="true"  pattern="^[0-9]{11}$" maxlength="11" value="{{$profile->telephone}}">
                         </div>
                         <div class="form-group">
                             <label for="address">地址</label>

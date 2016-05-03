@@ -96,12 +96,12 @@
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
                             <label for="telephone">手机号</label>
-                            <input class="form-control" type="number" id="telephone_update" name="telephone"
+                            <input class="form-control" type="text" id="telephone_update" name="telephone" pattern="^[0-9]{11}$" maxlength="11"
                                    placeholder="请输入手机号">
                         </div>
                         <div class="form-group">
                             <label for="nickname">真实姓名</label>
-                            <input type="text" class="form-control" id="nickname_update" name="nickname"
+                            <input type="text" class="form-control" id="nickname_update" name="nickname" maxlength="5"
                                    placeholder="请输入真实姓名">
                         </div>
                         <div class="form-group">
@@ -139,18 +139,18 @@
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
                             <label for="telephone">手机号</label>
-                            <input class="form-control" type="number" id="telephone_create" name="telephone"
-                                   placeholder="请输入手机号">
+                            <input class="form-control" type="text" id="telephone_create" name="telephone"
+                                   pattern="^[0-9]{11}$" maxlength="11"   placeholder="请输入手机号">
                         </div>
                         <div class="form-group">
                             <label for="name">用户名</label>
-                            <input class="form-control" type="text" name="name"
+                            <input class="form-control" type="text" name="name"  maxlength="5"
                                    placeholder="请输入用户名">
                         </div>
                         <div class="form-group">
                             <label for="nickname">姓名</label>
                             <input type="text" class="form-control" id="nickname_create" name="nickname"
-                                   placeholder="请输入真实姓名">
+                                maxlength="5"   placeholder="请输入真实姓名">
                         </div>
                         <div class="form-group">
                             <label for="email">邮箱</label>

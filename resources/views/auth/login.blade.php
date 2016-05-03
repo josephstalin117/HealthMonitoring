@@ -3,6 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row jumbotron">
+            <h5 class="text-center ">欢迎回来</h5>
             <div class="col-md-8 col-md-offset-2">
                 <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
                     {!! csrf_field() !!}
@@ -35,15 +36,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <div class="col-md-6 col-md-offset-4">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="remember">记住我
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+
 
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">

@@ -27,7 +27,7 @@
     </style>
 </head>
 <body id="app-layout">
-<nav class="navbar navbar-collapse navbar-static-top">
+<nav class="navbar navbar-collapse navbar-static-top navbar-inverse">
     <div class="container">
         <div class="navbar-header">
 
@@ -48,9 +48,9 @@
 
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav nav-pills">
                 @if(Auth::check())
-                    <li><a href="{{ url('/home') }}">主页</a></li>
+
                     @if(0==Auth::user()->role)
                         <li><a href="{{ url('/usermanage') }}">用户管理</a></li>
                         <li class="dropdown">
