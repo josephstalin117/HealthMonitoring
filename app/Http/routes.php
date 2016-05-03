@@ -28,6 +28,10 @@ Route::post('/usermanage/update', 'UserManageController@update');
 Route::get('/usermanage/delete/{id}', 'UserManageController@delete');
 Route::post('/usermanage/create', 'UserManageController@create');
 
+//pressure
+Route::get('/pressures','PressureController@index');
+Route::post('/pressure/create','PressureController@create');
+
 //api
 Route::group(['prefix' => 'api'], function () {
     //user

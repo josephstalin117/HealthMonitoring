@@ -56,11 +56,24 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-expanded="false">
-                                健康信息管理 <span class="caret"></span>
+                                用户健康信息管理 <span class="caret"></span>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ url('/paper/questions') }}">血压管理</a></li>
+                                <li><a href="{{ url('/paper/questi') }}">用户血压管理</a></li>
+                            </ul>
+                        </li>
+                    @elseif(Config::get('constants.ROLE_USER')==Auth::user()->role)
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false">
+                                健康信息 <span class="caret"></span>
+                            </a>
+
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ url('/pressures') }}">血压管理</a></li>
+                                <li><a href="{{ url('/suger') }}">血糖管理</a></li>
+                                <li><a href="{{ url('/paper/questi') }}">耳温管理</a></li>
                             </ul>
                         </li>
                     @endif
