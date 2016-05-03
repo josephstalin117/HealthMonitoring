@@ -29,8 +29,9 @@ Route::get('/usermanage/delete/{id}', 'UserManageController@delete');
 Route::post('/usermanage/create', 'UserManageController@create');
 
 //pressure
-Route::get('/pressures','PressureController@index');
-Route::post('/pressure/create','PressureController@create');
+Route::get('/pressures', 'PressureController@index');
+Route::get('/pressure/create', 'PressureController@create');
+Route::post('/pressure/store', 'PressureController@store');
 
 //api
 Route::group(['prefix' => 'api'], function () {
@@ -39,4 +40,5 @@ Route::group(['prefix' => 'api'], function () {
     Route::resource('usermanage/delete', 'UserManageController@destroy');
     //paper
     Route::resource('paper/delete', 'PaperController@destroy');
+    //pressure
 });
