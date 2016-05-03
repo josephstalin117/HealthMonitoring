@@ -9,7 +9,8 @@ class Profile extends Model {
 
     protected $fillable = ['telephone', 'nickname', 'avatar', 'address'];
 
-    public function User() {
-        return $this->belongsTo('App\User');
+    public function user() {
+//        return $this->belongsTo('App\User');
+        return $this->hasOne('App\User', 'id', 'user_id');
     }
 }

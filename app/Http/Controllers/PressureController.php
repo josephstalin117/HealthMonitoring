@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Response;
 use App\Pressure;
+use App\Profile;
 use Illuminate\Support\Facades\Auth;
 
 class PressureController extends Controller {
@@ -23,7 +24,7 @@ class PressureController extends Controller {
         ]);
     }
 
-    public function show($id) {
+    public function show($user_id) {
         //用户授权
         $this->authorize('userManage', Auth::user());
         try {
@@ -31,26 +32,34 @@ class PressureController extends Controller {
             $response = [
                 "pressures" => []
             ];
-            $pressures = Pressure::where('user_id', Auth::id()->get());
+            $pressures = Pressure::where('user_id', $user_id)->get();
 
             foreach ($pressures as $pressure) {
 
                 $response['pressures'][] = [
                     'high' => $pressure->high,
-                    'low' => $pressures->low,
-                    'time' => $pressure->category,
+                    'low' => $pressure->low,
+                    'time' => $pressure->created_at,
                 ];
             }
 
         } catch (Exception $e) {
             $response = [
-                "error" => "bad stauts"
+                "error" => "bad stauts",
             ];
             $statusCode = 404;
         } finally {
             return Response::json($response, $statusCode);
         }
+    }
 
+    public function search($nickname=null) {
+        $this->authorize('userManage', Auth::user());
+        $profiles = Profile::where('nickname', 'LIKE', "%$nickname%")->get();
+
+        return view('health.search_pressure',[
+            'profiles' => $profiles,
+        ]);
     }
 
     public function create() {

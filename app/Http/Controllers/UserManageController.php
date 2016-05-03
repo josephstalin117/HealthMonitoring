@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use Auth;
-use Response;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Http\Request;
 use Config;
 
 use App\Http\Requests;
-use APP\User;
-use APP\Profile;
+use App\User;
+use App\Profile;
 use Mockery\CountValidator\Exception;
 
 class UserManageController extends Controller {
@@ -67,6 +67,32 @@ class UserManageController extends Controller {
             return Response::json($response, $statusCode);
         }
 
+    }
+
+    public function search($nickname) {
+
+        $statusCode = 200;
+        $response = [
+            "users" => []
+        ];
+        $profiles = Profile::where('nickname', 'LIKE', "%$nickname%")->get();
+
+        foreach ($profiles as $profile) {
+            $response['users'][] = ["user" => [
+                'id' => $profile->user->id,
+                'name' => $profile->user->name,
+                'nickname' => $profile->nickname,
+                'avatar' => $profile->avatar,
+                'email' => $profile->user->email,
+                'role' => $profile->user->role,
+                'created_at' => $profile->user->created_at,
+                'telephone' => $profile->telephone,
+                'address' => $profile->user->address,
+            ]];
+        }
+
+
+        return Response::json($response, $statusCode);
     }
 
     public function destroy(Request $request, $id) {

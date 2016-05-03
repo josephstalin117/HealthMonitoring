@@ -32,13 +32,16 @@ Route::post('/usermanage/create', 'UserManageController@create');
 Route::get('/pressures', 'PressureController@index');
 Route::get('/pressure/create', 'PressureController@create');
 Route::post('/pressure/store', 'PressureController@store');
+Route::get('/pressure/search/{nickname?}', 'PressureController@search');
 
 //api
 Route::group(['prefix' => 'api'], function () {
     //user
     Route::resource('usermanage', 'UserManageController@show');
+    Route::get('usermanage/search/{nickname}', 'UserManageController@search');
     Route::resource('usermanage/delete', 'UserManageController@destroy');
     //paper
     Route::resource('paper/delete', 'PaperController@destroy');
     //pressure
+    Route::resource('pressure', 'PressureController@show');
 });
