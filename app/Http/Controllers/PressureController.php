@@ -21,12 +21,13 @@ class PressureController extends Controller {
 
         return view('health.show_pressure', [
             'pressures' => $pressures,
+            'user_id' => Auth::id(),
         ]);
     }
 
     public function show($user_id) {
         //用户授权
-        $this->authorize('userManage', Auth::user());
+//        $this->authorize('userManage', Auth::user());
         try {
             $statusCode = 200;
             $response = [
@@ -53,11 +54,11 @@ class PressureController extends Controller {
         }
     }
 
-    public function search($nickname=null) {
+    public function search($nickname = "") {
         $this->authorize('userManage', Auth::user());
-        $profiles = Profile::where('nickname', 'LIKE', "%$nickname%")->get();
+        $profiles = Profile::where('nickname', 'LIKE', "%$nickname%")->orderBy('created_at', 'asc')->get();
 
-        return view('health.search_pressure',[
+        return view('health.search_pressure', [
             'profiles' => $profiles,
         ]);
     }

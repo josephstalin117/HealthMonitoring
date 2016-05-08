@@ -32,7 +32,8 @@ Route::post('/usermanage/create', 'UserManageController@create');
 Route::get('/pressures', 'PressureController@index');
 Route::get('/pressure/create', 'PressureController@create');
 Route::post('/pressure/store', 'PressureController@store');
-Route::get('/pressure/search/{nickname?}', 'PressureController@search');
+Route::get('/pressure/search', 'PressureController@search');
+Route::get('/pressure/search/nickname/{nickname}', 'PressureController@search');
 
 //api
 Route::group(['prefix' => 'api'], function () {
