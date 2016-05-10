@@ -10,7 +10,7 @@
                     输入今天的血压吧!!
                 </a>
                 <a href="" type="button" data-toggle="modal"
-                   data-target="#detail_dialog" class="btn btn-danger openModal">查看此用户血压</a>
+                   data-target="#detail_dialog" class="btn btn-danger openModal">查看本人血压</a>
             </div>
             @if(count($pressures)>0)
                 <div class="row" style="margin-top: 10px;">
@@ -100,10 +100,12 @@
 
                     var date = [];
                     var high = [];
+                    var low = [];
                     for (var i = 0; i < result.pressures.length; i++) {
                         var pressureDate = new Date(result.pressures[i].time.date);
                         date.push(pressureDate.Format("yyyy-MM-dd hh:mm:ss"));
                         high.push(result.pressures[i].high);
+                        low.push(result.pressures[i].low);
                     }
 
                     initChart();
@@ -113,10 +115,16 @@
                         },
                         series: [
                             {
-                                name: '血压',
+                                name: '高压',
                                 type: 'line',
                                 data: high
+                            },
+                            {
+                                name: '低压',
+                                type: 'line',
+                                data: low
                             }
+
                         ]
                     });
                 }
