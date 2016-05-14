@@ -62,8 +62,7 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/pressure/search') }}">用户血压管理</a></li>
-                                <li><a href="{{ url('/sugar') }}">用户血糖管理</a></li>
-                                <li><a href="{{ url('/temperature') }}">用户耳温管理</a></li>
+                                <li><a href="{{ url('/sugar/search') }}">用户血糖管理</a></li>
                             </ul>
                         </li>
                     @elseif(Config::get('constants.ROLE_USER')==Auth::user()->role)
@@ -75,8 +74,7 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/pressures') }}">血压管理</a></li>
-                                <li><a href="{{ url('/suger') }}">血糖管理</a></li>
-                                <li><a href="{{ url('/temperate') }}">耳温管理</a></li>
+                                <li><a href="{{ url('/sugars') }}">血糖管理</a></li>
                             </ul>
                         </li>
                     @endif

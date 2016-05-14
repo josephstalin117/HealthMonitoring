@@ -30,4 +30,8 @@ class User extends Authenticatable {
     public function pressure() {
         return $this->hasMany('App\Pressure');
     }
+
+    public function sugar() {
+        return $this->hasMany('App\Sugar');
+    }
 }

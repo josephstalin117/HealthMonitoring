@@ -10,7 +10,7 @@
                 <button id="search" class="btn btn-success">确定</button>
             </div>
             <div class="row" id="search_content">
-                @if(count($profiles)>0)
+                @if(count($users)>0)
                     <div class="row" style="margin-top: 10px;">
                         <table class="table table-bordered">
                             <thead>
@@ -20,11 +20,11 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($profiles as $profile)
+                            @foreach($users as $user)
                                 <tr>
-                                    <td>{{$profile->nickname}}</td>
+                                    <td>{{$user->nickname}}</td>
                                     <td>
-                                        <a href="" type="button" data-id="{{$profile->user->id}}"
+                                        <a href="" type="button" data-id="{{$user->id}}"
                                            data-toggle="modal"
                                            data-target="#detail_dialog" class="btn btn-danger openModal">查看此用户血压</a>
                                     </td>
@@ -93,7 +93,7 @@
 
                     var date = [];
                     var high = [];
-                    var low=[];
+                    var low = [];
                     for (var i = 0; i < result.pressures.length; i++) {
                         var pressureDate = new Date(result.pressures[i].time.date);
                         date.push(pressureDate.Format("yyyy-MM-dd hh:mm:ss"));
@@ -173,7 +173,11 @@
     </script>
     <script>
         $('#search').click(function () {
-            window.location.href = '{{url('pressure/search/nickname')}}' + '/' + $("#search_content").val();
+            if ($('#search_content').val()) {
+                window.location.href = '{{url('pressure/search/nickname')}}' + '/' + $("#search_content").val();
+            } else {
+                alert("请输入搜索内容");
+            }
         });
     </script>
 @endsection

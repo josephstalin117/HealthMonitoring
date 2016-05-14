@@ -35,6 +35,13 @@ Route::post('/pressure/store', 'PressureController@store');
 Route::get('/pressure/search', 'PressureController@search');
 Route::get('/pressure/search/nickname/{nickname}', 'PressureController@search');
 
+//sugar
+Route::get('/sugars', 'SugarController@index');
+Route::get('/sugar/create', 'SugarController@create');
+Route::post('/sugar/store', 'SugarController@store');
+Route::get('/sugar/search', 'SugarController@search');
+Route::get('/sugar/search/nickname/{nickname}', 'SugarController@search');
+
 //api
 Route::group(['prefix' => 'api'], function () {
     //user
@@ -45,4 +52,6 @@ Route::group(['prefix' => 'api'], function () {
     Route::resource('paper/delete', 'PaperController@destroy');
     //pressure
     Route::resource('pressure', 'PressureController@show');
+    //sugar
+    Route::resource('sugar','SugarController@show');
 });

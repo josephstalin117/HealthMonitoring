@@ -4,46 +4,41 @@
     <div class="container">
         <div class="row jumbotron">
             @include('common.errors')
-            @include('manage.search')
             <div class="row" style="margin-top: 10px">
-                <a href="{{url('/pressure/create')}}" type="button" class="btn btn-success">
-                    输入今天的血压吧!!
-                </a>
-                <a href="" type="button" data-toggle="modal"
-                   data-target="#detail_dialog" class="btn btn-danger openModal">查看本人血压曲线</a>
+                请输入用户的姓名吧!!
+                <input type="text" name="nickname" id="search_content">
+                <button id="search" class="btn btn-success">确定</button>
             </div>
-            @if(count($pressures)>0)
-                <div class="row" style="margin-top: 10px;">
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th>高压</th>
-                            <th>低压</th>
-                            <th>日期</th>
-                            <th>删除</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($pressures as $pressure)
+            <div class="row" id="search_content">
+                @if(count($users)>0)
+                    <div class="row" style="margin-top: 10px;">
+                        <table class="table table-bordered">
+                            <thead>
                             <tr>
-                                <td>{{$pressure->high}}</td>
-                                <td>{{$pressure->low}}</td>
-                                <td>{{$pressure->created_at}}</td>
-                                <td>
-                                    <a href="" type="button" data-id="{{$pressure->id}}" data-toggle="modal"
-                                       data-target="#delete_dialog" class="btn btn-danger openModal"><i
-                                                class="fa fa-btn fa-trash"></i>删除</a>
-                                </td>
+                                <th>姓名</th>
+                                <th>查看血压</th>
                             </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            @else
-                <div class="row">
-                    暂无数据
-                </div>
-            @endif
+                            </thead>
+                            <tbody>
+                            @foreach($users as $user)
+                                <tr>
+                                    <td>{{$user->nickname}}</td>
+                                    <td>
+                                        <a href="" type="button" data-id="{{$user->id}}"
+                                           data-toggle="modal"
+                                           data-target="#detail_dialog" class="btn btn-danger openModal">查看此用户血糖</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <div class="row">
+                        暂无数据
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
     <!--detail Modal -->
@@ -61,15 +56,14 @@
             </div>
         </div>
     </div>
-
     <script>
         $(document).on("click", ".openModal", function () {
-            var user_id = "{{$user_id}}";
+            var user_id = $(this).data('id');
             loadChart(user_id);
         });
     </script>
 
-    <script>
+    <script type="text/javascript">
         //时间修改函数
         Date.prototype.Format = function (fmt) { //author: meizz
             var o = {
@@ -94,54 +88,46 @@
 
         function loadChart(user_id) {
             $.ajax({
-                url: "{{url('api/pressure')}}" + "/" + user_id,
+                url: "{{url('api/sugar')}}" + "/" + user_id,
                 success: function (result) {
 
                     var date = [];
-                    var high = [];
-                    var low = [];
-                    for (var i = 0; i < result.pressures.length; i++) {
-                        var pressureDate = new Date(result.pressures[i].time.date);
-                        date.push(pressureDate.Format("yyyy-MM-dd hh:mm:ss"));
-                        high.push(result.pressures[i].high);
-                        low.push(result.pressures[i].low);
+                    var sugar=[];
+                    for (var i = 0; i < result.sugars.length; i++) {
+                        var sugarDate = new Date(result.sugars[i].time.date);
+                        date.push(sugarDate.Format("yyyy-MM-dd hh:mm:ss"));
+                        sugar.push(result.sugars[i].sugar);
                     }
 
                     initChart();
-                    pressureChart.setOption({
+                    sugarChart.setOption({
                         xAxis: {
                             data: date
                         },
                         series: [
                             {
-                                name: '高压',
+                                name: '血糖',
                                 type: 'line',
-                                data: high
+                                data: sugar
                             },
-                            {
-                                name: '低压',
-                                type: 'line',
-                                data: low
-                            }
-
                         ]
                     });
                 }
             });
         }
         // 基于准备好的dom，初始化echarts实例
-        var pressureChart = echarts.init(document.getElementById('main'));
+        var sugarChart = echarts.init(document.getElementById('main'));
 
         // 指定图表的配置项和数据
         option = {
             title: {
-                text: '血压趋势分析'
+                text: '血糖趋势分析'
             },
             tooltip: {
                 trigger: 'axis'
             },
             legend: {
-                data: ['血压']
+                data: ['血糖']
             },
             toolbox: {},
             grid: {
@@ -164,7 +150,7 @@
             ],
             series: [
                 {
-                    name: '血压',
+                    name: '血糖',
                     type: 'line',
                     data: [120, 132, 101, 134, 90, 230, 210]
                 }
@@ -172,10 +158,19 @@
         };
 
         // 使用刚指定的配置项和数据显示图表。
-        pressureChart.setOption(option);
+        sugarChart.setOption(option);
         // 使用刚指定的配置项和数据显示图表。
         function initChart() {
-            pressureChart.setOption(option);
+            sugarChart.setOption(option);
         }
+    </script>
+    <script>
+        $('#search').click(function () {
+            if($("#search_content").val()){
+                window.location.href = '{{url('sugar/search/nickname')}}' + '/' + $("#search_content").val();
+            }else {
+                alert("请输入搜索信息");
+            }
+        });
     </script>
 @endsection
