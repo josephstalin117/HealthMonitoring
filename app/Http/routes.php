@@ -42,6 +42,10 @@ Route::post('/sugar/store', 'SugarController@store');
 Route::get('/sugar/search', 'SugarController@search');
 Route::get('/sugar/search/nickname/{nickname}', 'SugarController@search');
 
+//follow
+Route::get('/following','FollowController@show_following');
+Route::get('/followers','FollowController@show_followers');
+
 //api
 Route::group(['prefix' => 'api'], function () {
     //user

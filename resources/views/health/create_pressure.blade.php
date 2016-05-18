@@ -4,7 +4,6 @@
     <div class="container">
         <div class="row jumbotron">
             @include('common.errors')
-            @include('manage.search')
             <form action="{{url('/pressure/store')}}" method="post">
                 {!! csrf_field() !!}
                 <input type="hidden" name="id" id="id">

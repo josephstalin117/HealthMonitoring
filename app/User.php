@@ -34,4 +34,12 @@ class User extends Authenticatable {
     public function sugar() {
         return $this->hasMany('App\Sugar');
     }
+
+    public function follow(){
+        return $this->belongsTo('App\Follow');
+    }
+
+    public function followed(){
+        return $this->belongsTo('App\Follow','id','follow_id');
+    }
 }

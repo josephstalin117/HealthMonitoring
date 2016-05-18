@@ -4,7 +4,6 @@
     <div class="container">
         <div class="row jumbotron">
             @include('common.errors')
-            @include('manage.search')
             <div class="row" style="margin-top: 10px">
                 <a href="{{url('/sugar/create')}}" type="button" class="btn btn-success">
                     输入今天的血糖吧!!

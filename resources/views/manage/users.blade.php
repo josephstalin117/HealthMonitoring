@@ -4,7 +4,6 @@
     <div class="container">
         <div class="row jumbotron">
             @include('common.errors')
-            @include('manage.search')
             <div class="row" style="margin-top: 10px">
                 <button type="button" class="btn btn-success" data-toggle="modal"
                         data-target="#create_dialog">创建用户
