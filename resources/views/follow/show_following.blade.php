@@ -4,13 +4,7 @@
     <div class="container">
         <div class="row jumbotron">
             @include('common.errors')
-            <div class="row" style="margin-top: 10px">
-                <a href="{{url('/pressure/create')}}" type="button" class="btn btn-success">
-                    输入今天的血压吧!!
-                </a>
-                <a href="" type="button" data-toggle="modal"
-                   data-target="#detail_dialog" class="btn btn-danger openModal">查看本人血压曲线</a>
-            </div>
+            @include('follow.search_user')
             @if(count($followings)>0)
                 <div class="row" style="margin-top: 10px;">
                     <table class="table table-bordered">

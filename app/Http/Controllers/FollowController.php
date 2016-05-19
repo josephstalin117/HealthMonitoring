@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Follow;
 use Auth;
 use App\Http\Requests;
+use Response;
+use Illuminate\Support\Facades\Config;
 
 class FollowController extends Controller {
 
@@ -18,7 +20,7 @@ class FollowController extends Controller {
     }
 
     /**
-     * 主动关注
+     * 显示主动关注对象
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show_following() {
@@ -30,7 +32,7 @@ class FollowController extends Controller {
     }
 
     /**
-     * 被别人关注
+     * 显示被别人关注的对象
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show_followers() {
@@ -39,5 +41,38 @@ class FollowController extends Controller {
         return view('follow.show_followers', [
             'followers' => $followers,
         ]);
+    }
+
+    /**
+     * 关注某人
+     * @param $follow_user_id
+     * @return mixed
+     */
+    public function follow($follow_user_id) {
+
+        try {
+            $statusCode = 200;
+            $response = [
+                "status" => "",
+            ];
+
+            $follow = new Follow;
+            $follow->user_id = Auth::id();
+            $follow->follow_user_id = $follow_user_id;
+
+            $follow->auth = Config::get('constants.FOLLOW_AUTH_DISAGREE');
+            if ($follow->save()) {
+                $response['status'] = "success";
+            }
+
+        } catch (\Exception $e) {
+            $response = [
+                "error" => "can't find user",
+                "status" => "fails",
+            ];
+            $statusCode = 404;
+        } finally {
+            return Response::json($response, $statusCode);
+        }
     }
 }

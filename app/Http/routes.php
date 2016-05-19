@@ -58,4 +58,6 @@ Route::group(['prefix' => 'api'], function () {
     Route::resource('pressure', 'PressureController@show');
     //sugar
     Route::resource('sugar','SugarController@show');
+    //follow
+    Route::resource('follow','FollowController@follow');
 });

@@ -8,4 +8,7 @@
  return [
      'ROLE_ADMIN' => '0',
      'ROLE_USER' => '1',
+
+     'FOLLOW_AUTH_AGREE'=>'1',
+     'FOLLOW_AUTH_DISAGREE'=>'0',
  ];

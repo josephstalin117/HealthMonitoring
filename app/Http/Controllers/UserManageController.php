@@ -6,7 +6,7 @@ use Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Http\Request;
 use Config;
-
+use DB;
 use App\Http\Requests;
 use App\User;
 use App\Profile;
@@ -20,7 +20,6 @@ class UserManageController extends Controller {
     public function __construct() {
 
         $this->middleware('auth');
-        $this->authorize('userManage', Auth::user());
     }
 
     /**
@@ -29,6 +28,7 @@ class UserManageController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        $this->authorize('userManage', Auth::user());
         $users = User::where('role', 1)->orderBy('created_at')->get();
         return view('manage.users', [
             'users' => $users,
@@ -43,6 +43,9 @@ class UserManageController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
+
+        $this->authorize('userManage', Auth::user());
+
         try {
             $user = User::find($id);
             $statusCode = 200;
@@ -58,7 +61,7 @@ class UserManageController extends Controller {
                 'address' => $user->profile->address,
             ]];
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $response = [
                 "error" => "can't find user",
             ];
@@ -69,33 +72,47 @@ class UserManageController extends Controller {
 
     }
 
-    public function search($nickname) {
+    /**
+     * 搜索用户
+     * @param $nickname
+     * @return mixed
+     */
+    public function search($nickname = "") {
 
-        $statusCode = 200;
-        $response = [
-            "users" => []
-        ];
-        $profiles = Profile::where('nickname', 'LIKE', "%$nickname%")->get();
+        try {
+            $statusCode = 200;
+            $response = [
+                "users" => [],
+                "status" => "",
+            ];
 
-        foreach ($profiles as $profile) {
-            $response['users'][] = ["user" => [
-                'id' => $profile->user->id,
-                'name' => $profile->user->name,
-                'nickname' => $profile->nickname,
-                'avatar' => $profile->avatar,
-                'email' => $profile->user->email,
-                'role' => $profile->user->role,
-                'created_at' => $profile->user->created_at,
-                'telephone' => $profile->telephone,
-                'address' => $profile->user->address,
-            ]];
+            $users = DB::table('users')->join('profiles', 'users.id', '=', 'profiles.user_id')->select('users.*', 'profiles.nickname')->where('users.role', Config::get('constants.ROLE_USER'))->where('profiles.nickname', "LIKE", "%$nickname%")->get();
+
+            foreach ($users as $user) {
+                $response['users'][] = ["user" => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'nickname' => $user->nickname,
+                ]];
+            }
+
+            $response['status'] = "success";
+        } catch (\Exception $e) {
+            $response = [
+                "error" => "can't find user",
+                "status" => "fails",
+            ];
+            $statusCode = 404;
+        } finally {
+            return Response::json($response, $statusCode);
         }
 
-
-        return Response::json($response, $statusCode);
     }
 
     public function destroy(Request $request, $id) {
+
+        $this->authorize('userManage', Auth::user());
+
         try {
             $user = User::findOrFail($id);
             $user->profile->delete();
@@ -106,13 +123,15 @@ class UserManageController extends Controller {
 
             $request->session()->flash('success', '删除成功');
             return Response::json($response, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return Response::json("{}", 404);
         }
 
     }
 
     public function update(Request $request) {
+
+        $this->authorize('userManage', Auth::user());
 
         $this->validate($request, [
             'telephone' => 'required',
@@ -145,6 +164,8 @@ class UserManageController extends Controller {
     }
 
     public function create(Request $request) {
+
+        $this->authorize('userManage', Auth::user());
 
         $this->validate($request, [
             'name' => 'required',
