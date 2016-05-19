@@ -36,10 +36,10 @@ class User extends Authenticatable {
     }
 
     public function follow(){
-        return $this->belongsTo('App\Follow');
+        return $this->hasMany('App\Follow');
     }
 
     public function followed(){
-        return $this->belongsTo('App\Follow','id','follow_id');
+        return $this->hasMany('App\Follow','id','follow_user_id');
     }
 }

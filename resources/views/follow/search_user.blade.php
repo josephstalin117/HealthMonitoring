@@ -18,12 +18,30 @@
                     for (var i = 0; i < result.users.length; i++) {
                         $("#list_users").append("<li class='list-group-item' id=" + result.users[i].user.id + "></li>");
                         $("#" + result.users[i].user.id).append(result.users[i].user.nickname);
-                        $("#" + result.users[i].user.id).append("<a class='btn btn-success' data-id=" + result.users[i].user.id + ">关注</a>");
+                        $("#" + result.users[i].user.id).append("<a class='btn btn-success follow' onclick='follow(" + result.users[i].user.id + ")'>关注</a>");
                     }
 
                 }
             }
         });
     });
+
+    function follow(follow_user_id) {
+        $.ajax({
+            url: "{{url('/api/follow')}}" + "/" + follow_user_id,
+            dataType: "json",
+            method: "get",
+            success: function (data) {
+                if ("success" == data.status) {
+                    alert("发送关注申请成功");
+                } else if ("followed" == data.status) {
+                    alert("已经发送关注请求");
+                } else {
+                    alert("关注失败");
+                }
+            }
+        });
+    }
+
 </script>
 

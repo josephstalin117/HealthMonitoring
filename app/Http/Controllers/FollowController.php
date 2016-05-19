@@ -24,7 +24,7 @@ class FollowController extends Controller {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show_following() {
-        $followings = Follow::where('user_id', Auth::id())->get();
+        $followings = Follow::where('user_id', Auth::id())->where('auth', 1)->get();
 
         return view('follow.show_following', [
             'followings' => $followings,
@@ -56,14 +56,22 @@ class FollowController extends Controller {
                 "status" => "",
             ];
 
-            $follow = new Follow;
-            $follow->user_id = Auth::id();
-            $follow->follow_user_id = $follow_user_id;
+            $check_followed = Follow::where('user_id', Auth::id())->where('follow_user_id', $follow_user_id)->get();
+            if ($check_followed) {
+                $response['status'] = "followed";
+            } else {
+                $follow = new Follow;
+                $follow->user_id = Auth::id();
+                $follow->follow_user_id = $follow_user_id;
+                $follow->auth = Config::get('constants.FOLLOW_AUTH_DISAGREE');
 
-            $follow->auth = Config::get('constants.FOLLOW_AUTH_DISAGREE');
-            if ($follow->save()) {
-                $response['status'] = "success";
+                if ($follow->save()) {
+                    $response['status'] = "success";
+                } else {
+                    $response['status'] = "fails";
+                }
             }
+
 
         } catch (\Exception $e) {
             $response = [

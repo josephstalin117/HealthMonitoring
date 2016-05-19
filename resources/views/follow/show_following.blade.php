@@ -19,7 +19,7 @@
                         <tbody>
                         @foreach($followings as $following)
                             <tr>
-                                <td>{{$following->user->profile->nickname}}</td>
+                                <td>{{$following->follow_user->profile->nickname}}</td>
                                 <td>
                                     <a href="" type="button" data-id="{{$following->user_id}}" data-toggle="modal"
                                        data-target="#pressure_dialog" class="btn btn-success openModal">查看血压</a>
@@ -28,7 +28,6 @@
                                     <a href="" type="button" data-id="{{$following->user_id}}" data-toggle="modal"
                                        data-target="#sugar_dialog" class="btn btn-success openModal">查看血糖</a>
                                 </td>
-                                <td>{{$following->created_at}}</td>
                                 <td>
                                     <a href="" type="button" data-id="{{$following->id}}" data-toggle="modal"
                                        data-target="#unfollow_dialog" class="btn btn-danger openModal">不再关注</a>
