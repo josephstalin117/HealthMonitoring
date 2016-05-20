@@ -11,4 +11,7 @@
 
      'FOLLOW_AUTH_AGREE'=>'1',
      'FOLLOW_AUTH_DISAGREE'=>'0',
+
+     'FOLLOW_MESSAGE'=>'0',
+     'NORMAL_MESSAGE'=>'1',
  ];

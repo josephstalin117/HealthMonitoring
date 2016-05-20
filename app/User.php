@@ -42,4 +42,12 @@ class User extends Authenticatable {
     public function followed(){
         return $this->hasMany('App\Follow','id','follow_user_id');
     }
+
+    public function message(){
+        return $this->hasMany('App\Follow');
+    }
+
+    public function receive_message(){
+        return $this->hasMany('App\Follow','id','to_user_id');
+    }
 }

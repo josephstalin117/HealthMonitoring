@@ -88,6 +88,17 @@
                                 <li><a href="{{ url('/followers') }}">关注我的用户</a></li>
                             </ul>
                         </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false">
+                                消息<span class="caret"></span>
+                            </a>
+
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ url('/message/sends') }}">我发出的消息</a></li>
+                                <li><a href="{{ url('/message/receives') }}">我收到的消息</a></li>
+                            </ul>
+                        </li>
                     @endif
                 @endif
             </ul>
