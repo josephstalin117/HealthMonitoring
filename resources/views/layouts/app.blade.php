@@ -8,7 +8,6 @@
     <title>健康监测系统</title>
 
     <!-- Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
 
     <!-- Styles -->
     <link href="{{URL::asset('css/bootstrap.min.css')}}" rel="stylesheet">
@@ -115,7 +114,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                            aria-expanded="false">
-                            {{ Auth::user()->name }} <span class="caret"></span>
+                            {{ Auth::user()->profile->nickname }} <span class="caret"></span>
                         </a>
 
                         <ul class="dropdown-menu" role="menu">

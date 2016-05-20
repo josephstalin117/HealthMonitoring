@@ -46,6 +46,10 @@ Route::get('/sugar/search/nickname/{nickname}', 'SugarController@search');
 Route::get('/following', 'FollowController@show_following');
 Route::get('/followers', 'FollowController@show_followers');
 
+//message
+Route::get('/message/receives', 'MessageController@show_receives');
+Route::get('/message/sends', 'MessageController@show_sends');
+
 //api
 Route::group(['prefix' => 'api'], function () {
     //user
@@ -60,6 +64,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::resource('sugar', 'SugarController@show');
     //follow
     Route::resource('follow', 'FollowController@follow');
+    Route::resource('follow/approve', 'FollowController@approve_follow');
     //message
     Route::get('message/send/to_user_id/{to_user_id}/from_user_id/{from_user_id}/content/{content}/type/{type}', 'MessageController@send');
 });

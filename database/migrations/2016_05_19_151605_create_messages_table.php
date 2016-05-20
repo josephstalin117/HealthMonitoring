@@ -15,6 +15,7 @@ class CreateMessagesTable extends Migration {
             $table->integer('user_id');
             $table->integer('to_user_id');
             $table->text('content');
+            $table->integer('follow_id')->default(0);
             $table->integer('type')->default(0);
             $table->timestamps();
         });
