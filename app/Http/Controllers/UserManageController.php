@@ -89,11 +89,11 @@ class UserManageController extends Controller {
             $users = DB::table('users')->join('profiles', 'users.id', '=', 'profiles.user_id')->select('users.*', 'profiles.nickname')->where('users.role', Config::get('constants.ROLE_USER'))->where('profiles.nickname', "LIKE", "%$nickname%")->get();
 
             foreach ($users as $user) {
-                $response['users'][] = ["user" => [
+                $response['users'][] = [
                     'id' => $user->id,
                     'name' => $user->name,
                     'nickname' => $user->nickname,
-                ]];
+                ];
             }
 
             $response['status'] = "success";

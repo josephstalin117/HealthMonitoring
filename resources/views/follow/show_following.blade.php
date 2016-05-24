@@ -13,6 +13,7 @@
                             <th>关注的用户名</th>
                             <th>血压</th>
                             <th>血糖</th>
+                            <th>发送私信</th>
                             <th>取消关注</th>
                         </tr>
                         </thead>
@@ -27,6 +28,9 @@
                                 <td>
                                     <a href="" type="button" data-id="{{$following->user_id}}" data-toggle="modal"
                                        data-target="#sugar_dialog" class="btn btn-success openModal">查看血糖</a>
+                                </td>
+                                <td>
+                                    <a href="" type="button" data-id="{{$following->user_id}}" class="btn btn-primary">发送私信</a>
                                 </td>
                                 <td>
                                     <a href="" type="button" data-id="{{$following->id}}" data-toggle="modal"

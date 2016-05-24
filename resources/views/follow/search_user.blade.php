@@ -16,9 +16,9 @@
                 if ("success" == result.status) {
                     $("#list_users").html('');
                     for (var i = 0; i < result.users.length; i++) {
-                        $("#list_users").append("<li class='list-group-item' id=" + result.users[i].user.id + "></li>");
-                        $("#" + result.users[i].user.id).append(result.users[i].user.nickname);
-                        $("#" + result.users[i].user.id).append("<a class='btn btn-success follow' onclick='follow(" + result.users[i].user.id + ")'>关注</a>");
+                        $("#list_users").append("<li class='list-group-item' id=" + result.users[i].id + "></li>");
+                        $("#" + result.users[i].id).append(result.users[i].nickname);
+                        $("#" + result.users[i].id).append("<a class='btn btn-success follow' onclick='follow(" + result.users[i].id + ")'>关注</a>");
                     }
 
                 }
