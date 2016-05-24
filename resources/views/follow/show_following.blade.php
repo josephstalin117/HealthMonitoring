@@ -33,8 +33,8 @@
                                     <a href="" type="button" data-id="{{$following->user_id}}" class="btn btn-primary">发送私信</a>
                                 </td>
                                 <td>
-                                    <a href="" type="button" data-id="{{$following->id}}" data-toggle="modal"
-                                       data-target="#unfollow_dialog" class="btn btn-danger openModal">不再关注</a>
+                                    <a href="" type="button" class="btn btn-danger"
+                                       onclick="unfollow({{$following->follow_user->id}})">不再关注</a>
                                 </td>
                             </tr>
                         @endforeach
@@ -48,20 +48,21 @@
             @endif
         </div>
     </div>
-    <!--detail Modal -->
-    <div class="modal fade" id="detail_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="name"></h4>
-                </div>
-                <div class="modal-body">
-                    <div id="main" style="width: 600px;height:400px;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
 
+    <script>
+        function unfollow(unfollow_id) {
+            if (confirm("是否取消关注")) {
+                $.ajax({
+                    url: "{{url('/api/unfollow')}}" + "/" + unfollow_id,
+                    dataType: "json",
+                    method: "get",
+                    success: function (data) {
+                        if ("success" == data.status) {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        }
+    </script>
 @endsection

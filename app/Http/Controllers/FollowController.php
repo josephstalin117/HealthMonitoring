@@ -95,6 +95,34 @@ class FollowController extends Controller {
     }
 
     /**
+     * 取关某人
+     * @param $follow_user_id
+     * @return mixed
+     */
+    public function unfollow($follow_user_id) {
+
+        try {
+            $statusCode = 200;
+            $response = [
+                "status" => "",
+            ];
+
+            Follow::where('user_id', Auth::id())->where('follow_user_id', $follow_user_id)->delete();
+
+            $response['status'] = "success";
+
+        } catch (\Exception $e) {
+            $response = [
+                "status" => "fails",
+                "error" => $e,
+            ];
+            $statusCode = 404;
+        } finally {
+            return Response::json($response, $statusCode);
+        }
+    }
+
+    /**
      * 同意关注
      * @param $follow_id
      * @return mixed
