@@ -58,35 +58,39 @@ class FollowController extends Controller {
                 "status" => "",
             ];
 
-            $check_followed = Follow::where('user_id', Auth::id())->where('follow_user_id', $follow_user_id)->count();
-            if ($check_followed != 0) {
-                $response['status'] = "followed";
-            } else {
-                User::findOrFail($follow_user_id);
-                $user = User::findOrFail(Auth::id());
-                $follow = new Follow;
-                $follow->user_id = Auth::id();
-                $follow->follow_user_id = $follow_user_id;
-                $follow->auth = Config::get('constants.FOLLOW_AUTH_DISAGREE');
+            if ($follow_user_id != Auth::id()) {
 
-                if ($follow->save()) {
-                    $message = new Message;
-                    $message->user_id = Auth::id();
-                    $message->to_user_id = $follow_user_id;
-                    $message->follow_id = $follow->id;
-                    $message->content = "用户" . $user->profile->nickname . "想要关注您";
-                    $message->type = Config::get('constants.FOLLOW_MESSAGE');
-                    if ($message->save()) {
-                        $response['status'] = "success";
+                $check_followed = Follow::where('user_id', Auth::id())->where('follow_user_id', $follow_user_id)->count();
+                if ($check_followed != 0) {
+                    $response['status'] = "followed";
+                } else {
+                    User::findOrFail($follow_user_id);
+                    $user = User::findOrFail(Auth::id());
+                    $follow = new Follow;
+                    $follow->user_id = Auth::id();
+                    $follow->follow_user_id = $follow_user_id;
+                    $follow->auth = Config::get('constants.FOLLOW_AUTH_DISAGREE');
+
+                    if ($follow->save()) {
+                        $message = new Message;
+                        $message->user_id = Auth::id();
+                        $message->to_user_id = $follow_user_id;
+                        $message->follow_id = $follow->id;
+                        $message->content = "用户" . $user->profile->nickname . "想要关注您";
+                        $message->type = Config::get('constants.FOLLOW_MESSAGE');
+                        if ($message->save()) {
+                            $response['status'] = "success";
+                        }
                     }
                 }
+            } else {
+                $response['status'] = "not_follow_youself";
             }
 
         } catch (\Exception $e) {
             $response = [
-                "error" => "can't find user",
                 "status" => "fails",
-                "reason" => $e,
+                "error" => $e,
             ];
             $statusCode = 404;
         } finally {
@@ -99,7 +103,7 @@ class FollowController extends Controller {
      * @param $follow_user_id
      * @return mixed
      */
-    public function unfollow($follow_user_id) {
+    public function unfollow($follow_id) {
 
         try {
             $statusCode = 200;
@@ -107,7 +111,7 @@ class FollowController extends Controller {
                 "status" => "",
             ];
 
-            Follow::where('user_id', Auth::id())->where('follow_user_id', $follow_user_id)->delete();
+            Follow::findOrFail($follow_id)->delete();
 
             $response['status'] = "success";
 

@@ -34,7 +34,7 @@
                                 </td>
                                 <td>
                                     <a href="" type="button" class="btn btn-danger"
-                                       onclick="unfollow({{$following->follow_user->id}})">不再关注</a>
+                                       onclick="unfollow({{$following->id}})">不再关注</a>
                                 </td>
                             </tr>
                         @endforeach

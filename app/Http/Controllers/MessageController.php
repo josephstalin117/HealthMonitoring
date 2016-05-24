@@ -65,4 +65,19 @@ class MessageController extends Controller {
             return Response::json($response, $statusCode);
         }
     }
+
+    public function destroy($id) {
+
+        try {
+            $message = Message::findOrFail($id);
+            $message->delete();
+            $response = [
+                "status" => "success",
+            ];
+
+            return Response::json($response, 200);
+        } catch (\Exception $e) {
+            return Response::json("{}", 404);
+        }
+    }
 }

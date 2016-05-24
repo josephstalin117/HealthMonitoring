@@ -7,6 +7,7 @@
     </div>
 </div>
 <script>
+
     $("#search_user").change(function () {
         $.ajax({
             url: "{{url('/api/usermanage/search')}}" + "/" + $("#search_user").val(),
@@ -36,8 +37,11 @@
                     alert("发送关注申请成功");
                 } else if ("followed" == data.status) {
                     alert("已经发送关注请求");
+                } else if ("not_follow_youself" == data.status) {
+                    alert("不能关注自己");
                 } else {
                     alert("关注失败");
+
                 }
             }
         });
