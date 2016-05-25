@@ -4,7 +4,11 @@
     <div class="container">
         <div class="row jumbotron">
             @include('common.errors')
-
+            <div class="row" style="margin-top: 10px">
+                <a href="{{url('/message/create')}}" type="button" class="btn btn-success">
+                    发送私信
+                </a>
+            </div>
             @if(count($messages)>0)
                 <div class="row" style="margin-top: 10px;">
                     <table class="table table-bordered">

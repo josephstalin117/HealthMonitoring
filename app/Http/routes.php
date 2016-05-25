@@ -49,6 +49,7 @@ Route::get('/followers', 'FollowController@show_followers');
 //message
 Route::get('/message/receives', 'MessageController@show_receives');
 Route::get('/message/sends', 'MessageController@show_sends');
+Route::get('/message/create', 'MessageController@create');
 
 //api
 Route::group(['prefix' => 'api'], function () {
@@ -67,6 +68,6 @@ Route::group(['prefix' => 'api'], function () {
     Route::resource('unfollow', 'FollowController@unfollow');
     Route::resource('follow/approve', 'FollowController@approve_follow');
     //message
-    Route::get('message/send/to_user_id/{to_user_id}/from_user_id/{from_user_id}/content/{content}/type/{type}', 'MessageController@send');
+    Route::get('message/send/to_user_id/{to_user_id}/content/{content}', 'MessageController@send');
     Route::resource('message/delete', 'MessageController@destroy');
 });

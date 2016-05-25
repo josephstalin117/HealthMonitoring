@@ -33,20 +33,23 @@ class MessageController extends Controller {
         ]);
     }
 
-    public function send($to_user_id, $from_user_id, $content = "", $type = 0) {
+    public function create() {
+        return view('message.create');
+    }
+
+    public function send($to_user_id, $content = "", $type = 0) {
         try {
             $statusCode = 200;
             $response = [
                 "status" => "",
             ];
 
-            if (User::findOrFail($to_user_id) && User::findOrFail($from_user_id)) {
+            if (User::findOrFail($to_user_id)) {
                 $message = new Message;
-                $message->user_id = $from_user_id;
+                $message->user_id = Auth::id();
                 $message->to_user_id = $to_user_id;
                 $message->content = $content;
-                $message->type = $type;
-
+                $message->type = Config::get('constants.NORMAL_MESSAGE');
                 if ($message->save()) {
                     $response['status'] = "success";
                 } else {
@@ -56,9 +59,8 @@ class MessageController extends Controller {
 
         } catch (\Exception $e) {
             $response = [
-                "error" => "can't find user",
+                "error" => $e,
                 "status" => "fails",
-                "reason" => $e,
             ];
             $statusCode = 404;
         } finally {
