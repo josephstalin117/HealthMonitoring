@@ -22,12 +22,12 @@
                             <tr>
                                 <td>{{$following->follow_user->profile->nickname}}</td>
                                 <td>
-                                    <a href="" type="button" data-id="{{$following->user_id}}" data-toggle="modal"
-                                       data-target="#pressure_dialog" class="btn btn-success openModal">查看血压</a>
+                                    <a href="" type="button" data-toggle="modal"
+                                       data-target="#{{$following->id}}_pressure" class="btn btn-success openPressureModal">查看血压</a>
                                 </td>
                                 <td>
-                                    <a href="" type="button" data-id="{{$following->user_id}}" data-toggle="modal"
-                                       data-target="#sugar_dialog" class="btn btn-success openModal">查看血糖</a>
+                                    <a href="" type="button" data-toggle="modal"
+                                       data-target="#{{$following->id}}_sugar" class="btn btn-success openSugarModal">查看血糖</a>
                                 </td>
                                 <td>
                                     <a href="" type="button" data-id="{{$following->user_id}}" class="btn btn-primary">发送私信</a>
@@ -37,6 +37,41 @@
                                        onclick="unfollow({{$following->id}})">不再关注</a>
                                 </td>
                             </tr>
+
+                            <!--pressure Modal -->
+                            <div class="modal fade" id="{{$following->id}}_pressure" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                        aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="name"></h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            @include('health.chart_pressure',['follow_user_id'=>$following->follow_user->id])
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--sugar Modal -->
+                            <div class="modal fade" id="{{$following->id}}_sugar" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                        aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="name"></h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            @include('health.chart_sugar',['follow_user_id'=>$following->follow_user->id])
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         @endforeach
                         </tbody>
                     </table>

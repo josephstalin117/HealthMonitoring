@@ -1,8 +1,9 @@
-<div id="pressure_main" style="width: 600px;height:400px;"></div>
+<div id="sugar_main" style="width: 600px;height:400px;"></div>
 
 <script>
-    $(document).on("click", ".openPressureModal", function () {
-        loadPressureChart({{$follow_user_id}});
+
+    $(document).on("click", ".openSugarModal", function () {
+        loadSugarChart({{$follow_user_id}});
     });
 </script>
 
@@ -29,36 +30,29 @@
         return fmt;
     }
 
-    function loadPressureChart(user_id) {
+    function loadSugarChart(user_id) {
         $.ajax({
-            url: "{{url('api/pressure')}}" + "/" + user_id,
+            url: "{{url('api/sugar')}}" + "/" + user_id,
             success: function (result) {
 
                 var date = [];
-                var high = [];
-                var low = [];
-                for (var i = 0; i < result.pressures.length; i++) {
-                    var pressureDate = new Date(result.pressures[i].time.date);
-                    date.push(pressureDate.Format("yyyy-MM-dd hh:mm:ss"));
-                    high.push(result.pressures[i].high);
-                    low.push(result.pressures[i].low);
+                var sugar = [];
+                for (var i = 0; i < result.sugars.length; i++) {
+                    var sugarDate = new Date(result.sugars[i].time.date);
+                    date.push(sugarDate.Format("yyyy-MM-dd hh:mm:ss"));
+                    sugar.push(result.sugars[i].sugar);
                 }
 
-                initPressureChart();
-                pressureChart.setOption({
+                initSugarChart();
+                sugarChart.setOption({
                     xAxis: {
                         data: date
                     },
                     series: [
                         {
-                            name: '高压',
+                            name: '血糖',
                             type: 'line',
-                            data: high
-                        },
-                        {
-                            name: '低压',
-                            type: 'line',
-                            data: low
+                            data: sugar
                         }
 
                     ]
@@ -67,18 +61,18 @@
         });
     }
     // 基于准备好的dom，初始化echarts实例
-    var pressureChart = echarts.init(document.getElementById('pressure_main'));
+    var sugarChart = echarts.init(document.getElementById('sugar_main'));
 
     // 指定图表的配置项和数据
-    pressure_option = {
+    sugar_option = {
         title: {
-            text: '血压趋势分析'
+            text: '血糖趋势分析'
         },
         tooltip: {
             trigger: 'axis'
         },
         legend: {
-            data: ['血压']
+            data: ['血糖']
         },
         toolbox: {},
         grid: {
@@ -101,7 +95,7 @@
         ],
         series: [
             {
-                name: '血压',
+                name: '血糖',
                 type: 'line',
                 data: [120, 132, 101, 134, 90, 230, 210]
             }
@@ -109,9 +103,9 @@
     };
 
     // 使用刚指定的配置项和数据显示图表。
-    pressureChart.setOption(pressure_option);
+    sugarChart.setOption(sugar_option);
     // 使用刚指定的配置项和数据显示图表。
-    function initPressureChart() {
-        pressureChart.setOption(pressure_option);
+    function initSugarChart() {
+        sugarChart.setOption(sugar_option);
     }
 </script>
