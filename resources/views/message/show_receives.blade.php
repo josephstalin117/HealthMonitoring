@@ -19,17 +19,25 @@
                         <tbody>
                         @foreach($messages as $message)
                             <tr>
-                                <td>{{$message->user->profile->nickname}}</td>
+                                @if(0==$message->user_id)
+                                    <td>警告</td>
+                                @else
+                                    <td>{{$message->user->profile->nickname}}</td>
+                                @endif
+
                                 <td>{{$message->content}}</td>
                                 <td>{{$message->created_at}}</td>
                                 @if(0==$message->type)
-                                    <td><a href="" type="button" class="btn btn-primary" onclick="approve_follow({{$message->follow_id}})">同意关注请求</a></td>
+                                    <td><a href="" type="button" class="btn btn-primary"
+                                           onclick="approve_follow({{$message->follow_id}})">同意关注请求</a></td>
                                 @else
                                     <td><a href="" type="button" data-id="{{$message->id}}"
                                            class="btn btn-default">详情</a></td>
                                 @endif
                                 <td>
-                                    <a href="" type="button" class="btn btn-danger" onclick="delete_message({{$message->id}})"><i class="fa fa-btn fa-trash"></i>删除</a>
+                                    <a href="" type="button" class="btn btn-danger"
+                                       onclick="delete_message({{$message->id}})"><i
+                                                class="fa fa-btn fa-trash"></i>删除</a>
                                 </td>
                             </tr>
                         @endforeach

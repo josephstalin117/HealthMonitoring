@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Profile;
 use App\Sugar;
+use App\Line;
+use App\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -82,7 +84,57 @@ class SugarController extends Controller {
             'user_id' => Auth::user()->id,
         ]);
 
+        $line = $this->getLine();
+
+        if ($sugar->sugar > $line['sugar']) {
+            $this->sendWarning(Config::get('constants.LINE_SUGAR'));
+        }
+
         $request->session()->flash('success', '新增成功');
         return redirect('/sugars');
+    }
+
+    private function getLine() {
+
+        $line_pressure_high = Line::where('name', Config::get('constants.LINE_PRESSURE_HIGH'))->first();
+        $line_pressure_low = Line::where('name', Config::get('constants.LINE_PRESSURE_LOW'))->first();
+        $line_sugar = Line::where('name', Config::get('constants.LINE_SUGAR'))->first();
+
+        $line = array(
+            'high' => $line_pressure_high->name,
+            'low' => $line_pressure_low->line,
+            'sugar' => $line_sugar->line,
+        );
+
+        return $line;
+    }
+
+    private function sendWarning($type) {
+
+        $message = new Message;
+        $message->user_id = Config::get('constants.USER_ADMIN');
+        $message->to_user_id = Auth::id();
+
+        switch ($type) {
+            case 'high':
+                $content = "您的血压可能偏高,请及时询问医生";
+                break;
+            case 'low':
+                $content = "您的血压可能偏低,请及时询问医生";
+                break;
+            case 'sugar':
+                $content = "您的血糖可能偏高,请及时就医";
+                break;
+            default:
+                break;
+        }
+
+        $message->content = "用户" . Auth::user()->profile->nickname . $content;
+        $message->type = Config::get('constants.NORMAL_MESSAGE');
+        if ($message->save()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

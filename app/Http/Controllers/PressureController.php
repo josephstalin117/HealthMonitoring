@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Response;
 use App\Pressure;
 use App\Profile;
 use Illuminate\Support\Facades\Auth;
 use Config;
 use App\Line;
+use App\Message;
 use DB;
 
 class PressureController extends Controller {
@@ -88,13 +88,13 @@ class PressureController extends Controller {
 
         $line = $this->getLine();
 
-        if ($pressure->high > $line->high) {
+        if ($pressure->high > $line['high']) {
 
             $this->sendWarning(Config::get('constants.LINE_PRESSURE_HIGH'));
         }
 
-        if ($pressure->low < $line->low) {
-            $this->sendWarning(Config::get('constants.LINE_PRESSURE_HIGH'));
+        if ($pressure->low < $line['low']) {
+            $this->sendWarning(Config::get('constants.LINE_PRESSURE_LOW'));
         }
 
         $request->session()->flash('success', '新增成功');
@@ -103,12 +103,12 @@ class PressureController extends Controller {
 
     private function getLine() {
 
-        $line_pressure_high = Line::where('name', Config::get('constants.LINE_PRESSURE_HIGH'))->get();
-        $line_pressure_low = Line::where('name', Config::get('constants.LINE_PRESSURE_LOW'))->get();
-        $line_sugar = Line::where('name', Config::get('constants.LINE_SUGAR'))->get();
+        $line_pressure_high = Line::where('name', Config::get('constants.LINE_PRESSURE_HIGH'))->first();
+        $line_pressure_low = Line::where('name', Config::get('constants.LINE_PRESSURE_LOW'))->first();
+        $line_sugar = Line::where('name', Config::get('constants.LINE_SUGAR'))->first();
 
         $line = array(
-            'high' => $line_pressure_high->line,
+            'high' => $line_pressure_high->name,
             'low' => $line_pressure_low->line,
             'sugar' => $line_sugar->line,
         );
@@ -140,6 +140,5 @@ class PressureController extends Controller {
         } else {
             return false;
         }
-
     }
 }
