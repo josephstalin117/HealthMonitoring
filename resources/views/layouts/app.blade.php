@@ -62,6 +62,18 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/pressure/search') }}">用户血压管理</a></li>
                                 <li><a href="{{ url('/sugar/search') }}">用户血糖管理</a></li>
+                                <li><a href="{{ url('/line/set') }}">警戒线管理</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false">
+                                大数据统计 <span class="caret"></span>
+                            </a>
+
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ url('/pressure/search') }}">血压统计</a></li>
+                                <li><a href="{{ url('/sugar/search') }}">血糖统计</a></li>
                             </ul>
                         </li>
                     @elseif(Config::get('constants.ROLE_USER')==Auth::user()->role)

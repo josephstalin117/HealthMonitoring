@@ -14,4 +14,13 @@
 
      'FOLLOW_MESSAGE'=>'0',
      'NORMAL_MESSAGE'=>'1',
+
+     'LINE_PRESSURE_HIGH'=>'high',
+     'LINE_PRESSURE_LOW'=>'low',
+     'LINE_SUGAR'=>'sugar',
+
+     'LINE_MORE_THAN'=>'1',
+     'LINE_LESS_THAN'=>'0',
+
+     'USER_ADMIN'=>'0',
  ];

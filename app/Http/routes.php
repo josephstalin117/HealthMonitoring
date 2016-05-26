@@ -51,6 +51,9 @@ Route::get('/message/receives', 'MessageController@show_receives');
 Route::get('/message/sends', 'MessageController@show_sends');
 Route::get('/message/create', 'MessageController@create');
 
+//line
+Route::get('/line/set', 'LineController@set');
+
 //api
 Route::group(['prefix' => 'api'], function () {
     //user
@@ -70,4 +73,9 @@ Route::group(['prefix' => 'api'], function () {
     //message
     Route::get('message/send/to_user_id/{to_user_id}/content/{content}', 'MessageController@send');
     Route::resource('message/delete', 'MessageController@destroy');
+    //line
+    Route::resource('line/pressure/high', 'LineController@set_pressure_high_line');
+    Route::resource('line/pressure/low', 'LineController@set_pressure_low_line');
+    Route::resource('line/sugar', 'LineController@set_sugar_line');
+    Route::resource('line/get', 'LineController@get');
 });

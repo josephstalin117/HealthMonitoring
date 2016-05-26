@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Response;
 use App\Pressure;
 use App\Profile;
 use Illuminate\Support\Facades\Auth;
 use Config;
+use App\Line;
 use DB;
 
 class PressureController extends Controller {
@@ -84,7 +86,60 @@ class PressureController extends Controller {
             'user_id' => Auth::user()->id,
         ]);
 
+        $line = $this->getLine();
+
+        if ($pressure->high > $line->high) {
+
+            $this->sendWarning(Config::get('constants.LINE_PRESSURE_HIGH'));
+        }
+
+        if ($pressure->low < $line->low) {
+            $this->sendWarning(Config::get('constants.LINE_PRESSURE_HIGH'));
+        }
+
         $request->session()->flash('success', '新增成功');
         return redirect('/pressures');
+    }
+
+    private function getLine() {
+
+        $line_pressure_high = Line::where('name', Config::get('constants.LINE_PRESSURE_HIGH'))->get();
+        $line_pressure_low = Line::where('name', Config::get('constants.LINE_PRESSURE_LOW'))->get();
+        $line_sugar = Line::where('name', Config::get('constants.LINE_SUGAR'))->get();
+
+        $line = array(
+            'high' => $line_pressure_high->line,
+            'low' => $line_pressure_low->line,
+            'sugar' => $line_sugar->line,
+        );
+
+        return $line;
+    }
+
+    private function sendWarning($type) {
+
+        $message = new Message;
+        $message->user_id = Config::get('constants.USER_ADMIN');
+        $message->to_user_id = Auth::id();
+
+        switch ($type) {
+            case 'high':
+                $content = "您的血压可能偏高,请及时询问医生";
+                break;
+            case 'low':
+                $content = "您的血压可能偏低,请及时询问医生";
+                break;
+            default:
+                break;
+        }
+
+        $message->content = "用户" . Auth::user()->profile->nickname . $content;
+        $message->type = Config::get('constants.NORMAL_MESSAGE');
+        if ($message->save()) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }
