@@ -49,7 +49,7 @@ class PressureController extends Controller {
                 ];
             }
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $response = [
                 "error" => "bad stauts",
             ];

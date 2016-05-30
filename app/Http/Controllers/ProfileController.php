@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests;
 
 class ProfileController extends Controller {
@@ -39,12 +40,19 @@ class ProfileController extends Controller {
 
         $profile = $request->user()->profile()->first();
 
-        $profile->nickname = $request->nickname;
-        $profile->telephone = $request->telephone;
-        $profile->address = $request->address;
+        $profile->nickname = $request->input('nickname');
+        $profile->telephone = $request->input('telephone');
+        $profile->address = $request->input('address');
+
+        if ($request->hasFile('photo')) {
+            $imageName = Auth::id() . time() . '.' . $request->file('photo')->getClientOriginalExtension();
+            $destinationPath = base_path() . '/public/images/';
+            $request->file('photo')->move($destinationPath, $imageName);
+            $profile->avatar = '/images/' . $imageName;
+        }
 
         $profile->save();
-        $request->session()->flash('success','更新成功');
+        $request->session()->flash('success', '更新成功');
 
         return redirect('/home');
     }
