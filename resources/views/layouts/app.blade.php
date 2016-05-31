@@ -72,8 +72,8 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ url('/pressure/search') }}">血压统计</a></li>
-                                <li><a href="{{ url('/sugar/search') }}">血糖统计</a></li>
+                                <li><a href="{{ url('/statistics/pressure') }}">血压统计</a></li>
+                                <li><a href="{{ url('/statistics/sugar') }}">血糖统计</a></li>
                             </ul>
                         </li>
                     @elseif(Config::get('constants.ROLE_USER')==Auth::user()->role)

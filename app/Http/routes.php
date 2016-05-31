@@ -54,6 +54,10 @@ Route::get('/message/create', 'MessageController@create');
 //line
 Route::get('/line/set', 'LineController@set');
 
+//statistics
+Route::get('/statistics/pressure','StatisticsController@pressure');
+Route::get('/statistics/sugar','StatisticsController@sugar');
+
 //api
 Route::group(['prefix' => 'api'], function () {
     //user
@@ -78,4 +82,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::resource('line/pressure/low', 'LineController@set_pressure_low_line');
     Route::resource('line/sugar', 'LineController@set_sugar_line');
     Route::resource('line/get', 'LineController@get');
+    //statistics
+    Route::resource('statistics','StatisticsController@index');
+
 });
