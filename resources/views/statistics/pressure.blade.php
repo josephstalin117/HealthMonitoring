@@ -23,7 +23,7 @@
                         @foreach($list as $item)
                             <tr>
                                 <td>{{$item['nickname']}}</td>
-                                <td>年龄待添加</td>
+                                <td>{{$item['age']}}</td>
                                 <td>{{$item['max_high']}}</td>
                                 <td>{{$item['min_low']}}</td>
                                 <td>{{$item['avg_high']}}</td>

@@ -8,6 +8,7 @@ use App\User;
 use App\Pressure;
 use App\Sugar;
 use Config;
+use Carbon\Carbon;
 use DB;
 use App\Http\Requests;
 
@@ -67,12 +68,12 @@ class StatisticsController extends Controller {
         $list = array();
         $keyword = $request->input("keyword");
 
-        $users = DB::table('users')->join('profiles', 'users.id', '=', 'profiles.user_id')->select('users.*', 'profiles.nickname')->where('users.role', Config::get('constants.ROLE_USER'))->where('profiles.nickname', "LIKE", "%$keyword%")->get();
+        $users = DB::table('users')->join('profiles', 'users.id', '=', 'profiles.user_id')->select('users.*', 'profiles.nickname', 'profiles.birth')->where('users.role', Config::get('constants.ROLE_USER'))->where('profiles.nickname', "LIKE", "%$keyword%")->get();
 
         foreach ($users as $user) {
 
             $nickname = $user->nickname;
-            //@todo 添加年龄
+            $age = $this->getUserAge($user->birth);
             $max_high = DB::table('pressures')->where('user_id', $user->id)->max('high');
             $min_low = DB::table('pressures')->where('user_id', $user->id)->min('low');
             $avg_high = DB::table('pressures')->where('user_id', $user->id)->avg('high');
@@ -81,6 +82,7 @@ class StatisticsController extends Controller {
             array_push($list, array(
                 'id' => $user->id,
                 'nickname' => $nickname,
+                'age' => $age,
                 'max_high' => $max_high,
                 'min_low' => $min_low,
                 'avg_high' => $avg_high,
@@ -100,12 +102,12 @@ class StatisticsController extends Controller {
         $list = array();
         $keyword = $request->input('keyword');
 
-        $users = DB::table('users')->join('profiles', 'users.id', '=', 'profiles.user_id')->select('users.*', 'profiles.nickname')->where('users.role', Config::get('constants.ROLE_USER'))->where('profiles.nickname', "LIKE", "%$keyword%")->get();
+        $users = DB::table('users')->join('profiles', 'users.id', '=', 'profiles.user_id')->select('users.*', 'profiles.nickname', 'profiles.birth')->where('users.role', Config::get('constants.ROLE_USER'))->where('profiles.nickname', "LIKE", "%$keyword%")->get();
 
         foreach ($users as $user) {
 
             $nickname = $user->nickname;
-            //@todo 添加年龄
+            $age = $this->getUserAge($user->birth);
             $max_sugar = DB::table('sugars')->where('user_id', $user->id)->max('sugar');
             $min_sugar = DB::table('sugars')->where('user_id', $user->id)->min('sugar');
             $avg_sugar = DB::table('sugars')->where('user_id', $user->id)->avg('sugar');
@@ -113,6 +115,7 @@ class StatisticsController extends Controller {
             array_push($list, array(
                 'id' => $user->id,
                 'nickname' => $nickname,
+                'age' => $age,
                 'max_sugar' => $max_sugar,
                 'min_sugar' => $min_sugar,
                 'avg_sugar' => $avg_sugar,
@@ -124,6 +127,11 @@ class StatisticsController extends Controller {
             'list' => $list,
             'keyword' => $keyword
         ]);
+    }
+
+    private function getUserAge($birth) {
+        $dateNow = Carbon::now();
+        return ($dateNow->diffInYears(Carbon::parse($birth)));
     }
 
 }

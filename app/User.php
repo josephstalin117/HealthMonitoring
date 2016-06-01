@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Carbon;
 
 class User extends Authenticatable {
     /**
@@ -22,6 +23,11 @@ class User extends Authenticatable {
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function age() {
+        $dateNow = Carbon::now();
+        return ($dateNow->diffInYears(Carbon::parse($this->attributes['birth'])));
+    }
 
     public function profile() {
         return $this->hasOne('App\Profile');
