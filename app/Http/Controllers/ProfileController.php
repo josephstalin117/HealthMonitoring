@@ -43,7 +43,8 @@ class ProfileController extends Controller {
         $profile->nickname = $request->input('nickname');
         $profile->telephone = $request->input('telephone');
         $profile->address = $request->input('address');
-        //@todo 添加年龄
+        $birth=$request->input('birth');
+        $profile->birth = $birth;
 
         if ($request->hasFile('photo')) {
             $imageName = Auth::id() . time() . '.' . $request->file('photo')->getClientOriginalExtension();

@@ -62,14 +62,16 @@ class StatisticsController extends Controller {
 
     }
 
-    public function pressure($nickname) {
+    public function pressure(Request $request) {
 
         $list = array();
+        $keyword = $request->input("keyword");
 
-        $users = User::where('role', Config::get('constants.ROLE_USER'))->get();
+        $users = DB::table('users')->join('profiles', 'users.id', '=', 'profiles.user_id')->select('users.*', 'profiles.nickname')->where('users.role', Config::get('constants.ROLE_USER'))->where('profiles.nickname', "LIKE", "%$keyword%")->get();
+
         foreach ($users as $user) {
 
-            $nickname = $user->profile->nickname;
+            $nickname = $user->nickname;
             //@todo 添加年龄
             $max_high = DB::table('pressures')->where('user_id', $user->id)->max('high');
             $min_low = DB::table('pressures')->where('user_id', $user->id)->min('low');
@@ -89,17 +91,20 @@ class StatisticsController extends Controller {
 
         return view('statistics.pressure', [
             'list' => $list,
+            'keyword' => $keyword
         ]);
     }
 
-    public function sugar() {
+    public function sugar(Request $request) {
 
         $list = array();
+        $keyword = $request->input('keyword');
 
-        $users = User::where('role', Config::get('constants.ROLE_USER'))->get();
+        $users = DB::table('users')->join('profiles', 'users.id', '=', 'profiles.user_id')->select('users.*', 'profiles.nickname')->where('users.role', Config::get('constants.ROLE_USER'))->where('profiles.nickname', "LIKE", "%$keyword%")->get();
+
         foreach ($users as $user) {
 
-            $nickname = $user->profile->nickname;
+            $nickname = $user->nickname;
             //@todo 添加年龄
             $max_sugar = DB::table('sugars')->where('user_id', $user->id)->max('sugar');
             $min_sugar = DB::table('sugars')->where('user_id', $user->id)->min('sugar');
@@ -117,6 +122,7 @@ class StatisticsController extends Controller {
 
         return view('statistics.sugar', [
             'list' => $list,
+            'keyword' => $keyword
         ]);
     }
 

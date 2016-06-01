@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+
+    <link rel="stylesheet" href="{{URL::asset('css/bootstrap-datetimepicker.min.css')}}">
+    <script src="{{URL::asset('js/bootstrap-datetimepicker.min.js')}}"></script>
+
     <div class="container">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
@@ -27,6 +31,18 @@
                                    placeholder="请输入您的地址" value="{{$profile->address}}">
                         </div>
                         <div class="form-group">
+                            <label for="birth_show">出生年月</label>
+                            <div class="input-group date form_date col-md-5" data-date="{{$profile->birth}}"
+                                 data-date-format="yyyy-mm-dd"
+                                 data-link-field="" data-link-format="yyyy-mm-dd">
+                                <input class="form-control" size="16" type="text" id="birth" name="birth"
+                                       value="{{$profile->birth}}" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span
+                                            class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="photo">头像</label>
                             <img src="{{asset($profile->avatar)}}" alt="" class="media-object"
                                  style="width: 120px; height: 120px;">
@@ -38,4 +54,18 @@
                 </div>
             </div>
         </div>
+
+
+        <script>
+            $('.form_date').datetimepicker({
+                language: 'fr',
+                weekStart: 1,
+                todayBtn: 1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                forceParse: 0
+            });
+        </script>
 @endsection

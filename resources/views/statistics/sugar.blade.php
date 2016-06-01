@@ -4,6 +4,9 @@
     <div class="container">
         <div class="row jumbotron">
             @include('common.errors')
+            <div class="row">
+                血糖统计
+            </div>
             @include('statistics.search')
             @if(count($list)>0)
                 <div class="row" style="margin-top: 10px;">
