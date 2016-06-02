@@ -26,7 +26,7 @@ class SugarController extends Controller {
      */
     public function index() {
 
-        $sugars = Sugar::where('user_id', Auth::id())->get();
+        $sugars = Sugar::where('user_id', Auth::id())->paginate(6);
 
         return view('health.show_sugar', [
             'sugars' => $sugars,

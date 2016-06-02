@@ -22,7 +22,7 @@ class PressureController extends Controller {
 
     public function index() {
 
-        $pressures = Pressure::where('user_id', Auth::id())->get();
+        $pressures = Pressure::where('user_id', Auth::id())->paginate(6);
 
         return view('health.show_pressure', [
             'pressures' => $pressures,

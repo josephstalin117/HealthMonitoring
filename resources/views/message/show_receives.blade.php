@@ -43,6 +43,7 @@
                         @endforeach
                         </tbody>
                     </table>
+                    {!! $messages->links() !!}
                 </div>
             @else
                 <div class="row">

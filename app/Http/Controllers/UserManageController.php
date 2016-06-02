@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Follow;
+use App\Message;
+use App\Pressure;
+use App\Sugar;
 use Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Http\Request;
@@ -29,7 +33,7 @@ class UserManageController extends Controller {
      */
     public function index() {
         $this->authorize('userManage', Auth::user());
-        $users = User::where('role', 1)->orderBy('created_at')->get();
+        $users = User::where('role', 1)->orderBy('created_at')->paginate(6);
         return view('manage.users', [
             'users' => $users,
         ]);
@@ -115,6 +119,12 @@ class UserManageController extends Controller {
 
         try {
             $user = User::findOrFail($id);
+            Pressure::where('user_id',$id)->delete();
+            Sugar::where('user_id',$id)->delete();
+            Follow::where('user_id',$id)->delete();
+            Follow::where('follow_user_id',$id)->delete();
+            Message::where('user_id',$id)->delete();
+            Message::where('to_user_id',$id)->delete();
             $user->profile->delete();
             $user->delete();
             $response = [

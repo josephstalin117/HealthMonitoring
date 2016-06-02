@@ -12,7 +12,7 @@ class AlterProfilesTable extends Migration {
     public function up() {
         Schema::table('profiles', function (Blueprint $table) {
             //
-            $table->timestamp('birth')->after('telephone');
+            $table->date('birth')->after('telephone');
         });
     }
 

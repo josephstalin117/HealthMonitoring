@@ -33,15 +33,14 @@
                                        class="btn btn-primary openDetail" data-toggle="modal"
                                        data-target="#update_dialog">修改</a></td>
                                 <td>
-                                    <a href="" type="button" data-id="{{$user->id}}"
-                                       data-toggle="modal"
-                                       data-target="#delete_dialog" class="btn btn-danger openModal"><i
-                                                class="fa fa-btn fa-trash"></i>删除</a>
+                                    <a href="" type="button" onclick="delete_user({{$user->id}})"
+                                       class="btn btn-danger"><i class="fa fa-btn fa-trash"></i>删除</a>
                                 </td>
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
+                    {!! $users->links() !!}
                 </div>
             @endif
         </div>
@@ -95,7 +94,8 @@
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
                             <label for="telephone">手机号</label>
-                            <input class="form-control" type="text" id="telephone_update" name="telephone" pattern="^[0-9]{11}$" maxlength="11"
+                            <input class="form-control" type="text" id="telephone_update" name="telephone"
+                                   pattern="^[0-9]{11}$" maxlength="11"
                                    placeholder="请输入手机号">
                         </div>
                         <div class="form-group">
@@ -139,17 +139,17 @@
                         <div class="form-group">
                             <label for="telephone">手机号</label>
                             <input class="form-control" type="text" id="telephone_create" name="telephone"
-                                   pattern="^[0-9]{11}$" maxlength="11"   placeholder="请输入手机号">
+                                   pattern="^[0-9]{11}$" maxlength="11" placeholder="请输入手机号">
                         </div>
                         <div class="form-group">
                             <label for="name">用户名</label>
-                            <input class="form-control" type="text" name="name"  maxlength="5"
+                            <input class="form-control" type="text" name="name" maxlength="5"
                                    placeholder="请输入用户名">
                         </div>
                         <div class="form-group">
                             <label for="nickname">姓名</label>
                             <input type="text" class="form-control" id="nickname_create" name="nickname"
-                                maxlength="5"   placeholder="请输入真实姓名">
+                                   maxlength="5" placeholder="请输入真实姓名">
                         </div>
                         <div class="form-group">
                             <label for="email">邮箱</label>
@@ -175,17 +175,23 @@
             </div>
         </div>
     </div>
-    {{--delete modal--}}
-    <div class="modal fade" id="delete_dialog" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <h4>是否删除</h4>
-                <a href="" type="button" id="delete_confirm" class="btn btn-danger" data-dismiss="modal">删除</a>
-                <a type="submit" class="btn btn-primary" data-dismiss="modal">取消</a>
-            </div>
-        </div>
-    </div>
     <script>
+
+        function delete_user(user_id) {
+            if (confirm("是否取消关注")) {
+                $.ajax({
+                    url: "{{url('/api/usermanage/delete')}}" + "/" + user_id,
+                    dataType: "json",
+                    method: "get",
+                    success: function (data) {
+                        if ("success" == data.status) {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        }
+
         $(document).on("click", ".openModal", function () {
             var user_id = $(this).data('id');
             $("#delete_confirm").click(function () {

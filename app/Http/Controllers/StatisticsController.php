@@ -68,7 +68,9 @@ class StatisticsController extends Controller {
         $list = array();
         $keyword = $request->input("keyword");
 
-        $users = DB::table('users')->join('profiles', 'users.id', '=', 'profiles.user_id')->select('users.*', 'profiles.nickname', 'profiles.birth')->where('users.role', Config::get('constants.ROLE_USER'))->where('profiles.nickname', "LIKE", "%$keyword%")->get();
+        $range = $this->getBirthRange($request->input('range'));
+
+        $users = DB::table('users')->join('profiles', 'users.id', '=', 'profiles.user_id')->select('users.*', 'profiles.nickname', 'profiles.birth')->where('users.role', Config::get('constants.ROLE_USER'))->whereBetween(DB::raw("TIMESTAMPDIFF(YEAR,profiles.birth,CURDATE())"), [$range['min'], $range['max']])->where('profiles.nickname', "LIKE", "%$keyword%")->get();
 
         foreach ($users as $user) {
 
@@ -93,7 +95,8 @@ class StatisticsController extends Controller {
 
         return view('statistics.pressure', [
             'list' => $list,
-            'keyword' => $keyword
+            'keyword' => $keyword,
+            'range' => $request->input('range'),
         ]);
     }
 
@@ -102,7 +105,9 @@ class StatisticsController extends Controller {
         $list = array();
         $keyword = $request->input('keyword');
 
-        $users = DB::table('users')->join('profiles', 'users.id', '=', 'profiles.user_id')->select('users.*', 'profiles.nickname', 'profiles.birth')->where('users.role', Config::get('constants.ROLE_USER'))->where('profiles.nickname', "LIKE", "%$keyword%")->get();
+        $range = $this->getBirthRange($request->input('range'));
+
+        $users = DB::table('users')->join('profiles', 'users.id', '=', 'profiles.user_id')->select('users.*', 'profiles.nickname', 'profiles.birth')->where('users.role', Config::get('constants.ROLE_USER'))->whereBetween(DB::raw("TIMESTAMPDIFF(YEAR,profiles.birth,CURDATE())"), [$range['min'], $range['max']])->where('profiles.nickname', "LIKE", "%$keyword%")->get();
 
         foreach ($users as $user) {
 
@@ -125,13 +130,47 @@ class StatisticsController extends Controller {
 
         return view('statistics.sugar', [
             'list' => $list,
-            'keyword' => $keyword
+            'keyword' => $keyword,
+            'range' => $request->input('range')
         ]);
     }
 
     private function getUserAge($birth) {
         $dateNow = Carbon::now();
         return ($dateNow->diffInYears(Carbon::parse($birth)));
+    }
+
+    private function getBirthRange($time) {
+        $range = array('min' => '0', 'max' => '200');
+        switch ($time) {
+            case 'all':
+                $range['min'] = 0;
+                $range['max'] = 200;
+                break;
+            case '30':
+                $range['min'] = 0;
+                $range['max'] = 30;
+                break;
+            case '40':
+                $range['min'] = 30;
+                $range['max'] = 40;
+                break;
+            case '50':
+                $range['min'] = 40;
+                $range['max'] = 50;
+                break;
+            case '60':
+                $range['min'] = 50;
+                $range['max'] = 60;
+                break;
+            case '60+':
+                $range['min'] = 60;
+                $range['max'] = 100;
+                break;
+            default:
+                break;
+        }
+        return $range;
     }
 
 }

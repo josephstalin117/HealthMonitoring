@@ -37,6 +37,7 @@
                         @endforeach
                         </tbody>
                     </table>
+                    {!! $pressures->links() !!}
                 </div>
             @else
                 <div class="row">

@@ -35,6 +35,7 @@
                         @endforeach
                         </tbody>
                     </table>
+                    {!! $sugars->links() !!}
                 </div>
             @else
                 <div class="row">

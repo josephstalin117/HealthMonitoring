@@ -18,7 +18,7 @@ class MessageController extends Controller {
     }
 
     public function show_sends() {
-        $messages = Message::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+        $messages = Message::where('user_id', Auth::id())->orderBy('created_at', 'desc')->paginate(6);
 
         return view('message.show_sends', [
             'messages' => $messages,
@@ -26,7 +26,7 @@ class MessageController extends Controller {
     }
 
     public function show_receives() {
-        $messages = Message::where('to_user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+        $messages = Message::where('to_user_id', Auth::id())->orderBy('created_at', 'desc')->paginate(6);
 
         return view('message.show_receives', [
             'messages' => $messages,
