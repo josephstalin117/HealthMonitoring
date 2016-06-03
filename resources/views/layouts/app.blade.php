@@ -76,6 +76,7 @@
                                 <li><a href="{{ url('/statistics/sugar') }}">血糖统计</a></li>
                             </ul>
                         </li>
+                        <li><a href="{{ url('/articlemanage') }}">管理养生文章</a></li>
                     @elseif(Config::get('constants.ROLE_USER')==Auth::user()->role)
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
@@ -111,6 +112,7 @@
                                 <li><a href="{{ url('/message/receives') }}">我收到的消息</a></li>
                             </ul>
                         </li>
+                        <li><a href="{{ url('/articles') }}">查看养生文章</a></li>
                     @endif
                 @endif
             </ul>
@@ -131,7 +133,6 @@
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{ url('/changepwd') }}">修改密码</a></li>
                             <li><a href="{{ url('/logout') }}">登出</a></li>
                         </ul>
                     </li>

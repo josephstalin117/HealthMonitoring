@@ -59,6 +59,14 @@ Route::get('/lines', 'LineController@index');
 Route::get('/statistics/pressure', 'StatisticsController@pressure');
 Route::get('/statistics/sugar', 'StatisticsController@sugar');
 
+//articles
+Route::get('/articlemanage', 'ArticleController@index');
+Route::get('/article/create', 'ArticleController@create');
+Route::get('/article/update/{id}', 'ArticleController@update');
+Route::post('/article/store/{id?}', 'ArticleController@store');
+Route::get('/articles', 'ArticleController@list_articles');
+Route::get('article/{id}', 'ArticleController@show');
+
 //api
 Route::group(['prefix' => 'api'], function () {
     //user
@@ -85,5 +93,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::resource('line/get', 'LineController@get');
     //statistics
     Route::resource('statistics', 'StatisticsController@index');
+    //article
+    Route::get('article/delete/{id}', 'ArticleController@destroy');
 
 });
