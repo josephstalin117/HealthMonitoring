@@ -131,7 +131,7 @@ class FollowController extends Controller {
      * @param $follow_id
      * @return mixed
      */
-    public function approve_follow($follow_id) {
+    public function approve_follow($follow_id, $message_id) {
 
         try {
             $statusCode = 200;
@@ -140,6 +140,11 @@ class FollowController extends Controller {
             ];
 
             $follow = Follow::findOrFail($follow_id);
+            $message = Message::findOrFail($message_id);
+
+            $message->type = Config::get('constants.NORMAL_MESSAGE');
+            $message->save();
+
             $follow->auth = Config::get('constants.FOLLOW_AUTH_AGREE');
 
             if ($follow->save()) {

@@ -78,7 +78,6 @@ class PressureController extends Controller {
             'low' => 'required',
         ]);
 
-        //@todo 添加时间插件
         $pressure = Pressure::create([
             'low' => $request->input('low'),
             'high' => $request->input('high'),

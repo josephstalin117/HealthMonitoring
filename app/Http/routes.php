@@ -74,7 +74,7 @@ Route::group(['prefix' => 'api'], function () {
     //follow
     Route::resource('follow', 'FollowController@follow');
     Route::resource('unfollow', 'FollowController@unfollow');
-    Route::resource('follow/approve', 'FollowController@approve_follow');
+    Route::get('follow/approve/user/{follow_id}/message/{message_id}', 'FollowController@approve_follow');
     //message
     Route::get('message/send/to_user_id/{to_user_id}/content/{content}', 'MessageController@send');
     Route::resource('message/delete', 'MessageController@destroy');

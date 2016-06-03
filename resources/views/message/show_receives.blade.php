@@ -29,7 +29,8 @@
                                 <td>{{$message->created_at}}</td>
                                 @if(0==$message->type)
                                     <td><a href="" type="button" class="btn btn-primary"
-                                           onclick="approve_follow({{$message->follow_id}})">同意关注请求</a></td>
+                                           onclick="approve_follow({{$message->follow_id}},{{$message->id}})">同意关注请求</a>
+                                    </td>
                                 @else
                                     <td><a href="" type="button" data-id="{{$message->id}}"
                                            class="btn btn-default">详情</a></td>
@@ -53,14 +54,15 @@
         </div>
     </div>
     <script>
-        function approve_follow(follow_id) {
+        function approve_follow(follow_id, message_id) {
             $.ajax({
-                url: "{{url('/api/follow/approve')}}" + "/" + follow_id,
+                url: "{{url('/api/follow/approve/user')}}" + "/" + follow_id + "/message/" + message_id,
                 dataType: "json",
                 method: "get",
                 success: function (data) {
                     if ("success" == data.status) {
                         alert("同意对方关注请求");
+                        location.reload();
                     }
                 }
             });
