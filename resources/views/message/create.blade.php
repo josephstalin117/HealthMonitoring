@@ -50,7 +50,6 @@
         }
 
         function send() {
-
             var to_user_id = $("#to_user_id").val();
             var content = $("#content").val();
             $.ajax({
