@@ -22,7 +22,7 @@ class PressureController extends Controller {
 
     public function index() {
 
-        $pressures = Pressure::where('user_id', Auth::id())->paginate(6);
+        $pressures = Pressure::where('user_id', Auth::id())->orderBy('created_at', 'desc')->paginate(6);
 
         return view('health.show_pressure', [
             'pressures' => $pressures,
@@ -61,7 +61,6 @@ class PressureController extends Controller {
 
     public function search($nickname = "") {
         $this->authorize('userManage', Auth::user());
-//        $profiles = Profile::where('nickname', 'LIKE', "%$nickname%")->orderBy('created_at', 'asc')->get();
         $users = DB::table('users')->join('profiles', 'users.id', '=', 'profiles.user_id')->select('users.*', 'profiles.nickname')->where('users.role', Config::get('constants.ROLE_USER'))->where('profiles.nickname', "LIKE", "%$nickname%")->get();
 
         return view('health.search_pressure', [
@@ -101,6 +100,22 @@ class PressureController extends Controller {
         return redirect('/pressures');
     }
 
+    public function destroy(Request $request, $id) {
+
+        try {
+            $pressure = Pressure::findOrFail($id);
+            $pressure->delete();
+            $response = [
+                "status" => "success",
+            ];
+
+            $request->session()->flash('success', '删除成功');
+            return Response::json($response, 200);
+        } catch (\Exception $e) {
+            return Response::json("{}", 404);
+        }
+    }
+
     private function getLine() {
 
         $line_pressure_high = Line::where('name', Config::get('constants.LINE_PRESSURE_HIGH'))->first();
@@ -108,7 +123,7 @@ class PressureController extends Controller {
         $line_sugar = Line::where('name', Config::get('constants.LINE_SUGAR'))->first();
 
         $line = array(
-            'high' => $line_pressure_high->name,
+            'high' => $line_pressure_high->line,
             'low' => $line_pressure_low->line,
             'sugar' => $line_sugar->line,
         );
@@ -142,19 +157,5 @@ class PressureController extends Controller {
         }
     }
 
-    public function destroy(Request $request, $id) {
 
-        try {
-            $pressure = Pressure::findOrFail($id);
-            $pressure->delete();
-            $response = [
-                "status" => "success",
-            ];
-
-            $request->session()->flash('success', '删除成功');
-            return Response::json($response, 200);
-        } catch (\Exception $e) {
-            return Response::json("{}", 404);
-        }
-    }
 }

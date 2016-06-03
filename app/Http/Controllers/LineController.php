@@ -16,6 +16,15 @@ class LineController extends Controller {
         $this->middleware('auth');
     }
 
+    public function index() {
+
+        $lines = Line::all();
+
+        return view('line.index', [
+            'lines' => $lines,
+        ]);
+    }
+
     public function set() {
         $this->authorize('userManage', Auth::user());
         return view('line.set');

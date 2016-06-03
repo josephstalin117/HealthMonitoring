@@ -86,6 +86,7 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/pressures') }}">血压管理</a></li>
                                 <li><a href="{{ url('/sugars') }}">血糖管理</a></li>
+                                <li><a href="{{ url('/lines') }}">警戒线</a></li>
                             </ul>
                         </li>
                         <li class="dropdown">

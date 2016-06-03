@@ -53,6 +53,7 @@ Route::get('/message/create', 'MessageController@create');
 
 //line
 Route::get('/line/set', 'LineController@set');
+Route::get('/lines', 'LineController@index');
 
 //statistics
 Route::get('/statistics/pressure', 'StatisticsController@pressure');

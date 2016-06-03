@@ -26,7 +26,7 @@ class SugarController extends Controller {
      */
     public function index() {
 
-        $sugars = Sugar::where('user_id', Auth::id())->paginate(6);
+        $sugars = Sugar::where('user_id', Auth::id())->orderBy('created_at', 'desc')->paginate(6);
 
         return view('health.show_sugar', [
             'sugars' => $sugars,
@@ -50,7 +50,7 @@ class SugarController extends Controller {
                 ];
             }
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $response = [
                 "error" => "bad stauts",
             ];
