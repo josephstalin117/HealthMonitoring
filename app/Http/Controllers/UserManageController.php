@@ -31,11 +31,15 @@ class UserManageController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index(Request $request) {
         $this->authorize('userManage', Auth::user());
-        $users = User::where('role', 1)->orderBy('created_at')->paginate(6);
+        $keyword = $request->input('keyword');
+        $users = DB::table('users')->join('profiles', 'users.id', '=', 'profiles.user_id')->select('users.*', 'profiles.nickname', DB::raw("TIMESTAMPDIFF(YEAR,profiles.birth,CURDATE()) As age"))->where('users.role', Config::get('constants.ROLE_USER'))->where('profiles.nickname', "LIKE", "%$keyword%")->paginate(6);
+
+//        $users = User::where('role', 1)->orderBy('created_at')->where('profiles.nickname', "LIKE", "%$keyword%")->paginate(6);
         return view('manage.users', [
             'users' => $users,
+            'keyword' => $keyword
         ]);
     }
 
@@ -119,12 +123,12 @@ class UserManageController extends Controller {
 
         try {
             $user = User::findOrFail($id);
-            Pressure::where('user_id',$id)->delete();
-            Sugar::where('user_id',$id)->delete();
-            Follow::where('user_id',$id)->delete();
-            Follow::where('follow_user_id',$id)->delete();
-            Message::where('user_id',$id)->delete();
-            Message::where('to_user_id',$id)->delete();
+            Pressure::where('user_id', $id)->delete();
+            Sugar::where('user_id', $id)->delete();
+            Follow::where('user_id', $id)->delete();
+            Follow::where('follow_user_id', $id)->delete();
+            Message::where('user_id', $id)->delete();
+            Message::where('to_user_id', $id)->delete();
             $user->profile->delete();
             $user->delete();
             $response = [

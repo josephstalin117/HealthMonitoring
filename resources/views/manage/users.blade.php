@@ -4,6 +4,7 @@
     <div class="container">
         <div class="row jumbotron">
             @include('common.errors')
+            @include('manage.search_user')
             <div class="row" style="margin-top: 10px">
                 <button type="button" class="btn btn-success" data-toggle="modal"
                         data-target="#create_dialog">创建用户
@@ -15,7 +16,8 @@
                         <thead>
                         <tr>
                             <th>用户名</th>
-                            <th>姓名</th>
+                            <th>真实姓名</th>
+                            <th>年龄</th>
                             <th>详情</th>
                             <th>修改</th>
                             <th>删除</th>
@@ -25,7 +27,12 @@
                         @foreach($users as $user)
                             <tr>
                                 <td>{{$user->name}}</td>
-                                <td>{{$user->profile->nickname}}</td>
+                                <td>{{$user->nickname}}</td>
+                                @if($user->age)
+                                    <td>{{$user->age}}</td>
+                                @else
+                                    <td>暂无年龄</td>
+                                @endif
                                 <td><a href="" type="button" data-id="{{$user->id}}"
                                        class="btn btn-primary openDetail" data-toggle="modal"
                                        data-target="#detail_dialog">详情</a></td>
@@ -192,21 +199,6 @@
             }
         }
 
-        $(document).on("click", ".openModal", function () {
-            var user_id = $(this).data('id');
-            $("#delete_confirm").click(function () {
-                $.ajax({
-                    url: "{{url('/')}}/api/usermanage/delete/" + user_id,
-                    dataType: "json",
-                    method: "get",
-                    success: function (data) {
-                        if ("success" == data.status) {
-                            location.reload();
-                        }
-                    }
-                });
-            });
-        });
         $(document).on("click", ".openDetail", function () {
             var user_id = $(this).data('id');
             $.ajaxSetup({
