@@ -29,9 +29,8 @@
                                 <td>{{$pressure->low}}</td>
                                 <td>{{$pressure->created_at}}</td>
                                 <td>
-                                    <a href="" type="button" data-id="{{$pressure->id}}" data-toggle="modal"
-                                       data-target="#delete_dialog" class="btn btn-danger openModal"><i
-                                                class="fa fa-btn fa-trash"></i>删除</a>
+                                    <a href="" onclick="delete_pressure({{$pressure->id}})" type="button"
+                                       class="btn btn-danger"><i class="fa fa-btn fa-trash"></i>删除</a>
                                 </td>
                             </tr>
                         @endforeach
@@ -67,6 +66,16 @@
             var user_id = "{{$user_id}}";
             loadChart(user_id);
         });
+
+        function delete_pressure(id) {
+            if (confirm("是否删除?")) {
+                $.get("{{url('api/pressure/delete')}}" + "/" + id, function (data) {
+                    if ('success' == data.status) {
+                        location.reload();
+                    }
+                });
+            }
+        }
     </script>
 
     <script>

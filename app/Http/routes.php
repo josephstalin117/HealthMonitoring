@@ -55,8 +55,8 @@ Route::get('/message/create', 'MessageController@create');
 Route::get('/line/set', 'LineController@set');
 
 //statistics
-Route::get('/statistics/pressure','StatisticsController@pressure');
-Route::get('/statistics/sugar','StatisticsController@sugar');
+Route::get('/statistics/pressure', 'StatisticsController@pressure');
+Route::get('/statistics/sugar', 'StatisticsController@sugar');
 
 //api
 Route::group(['prefix' => 'api'], function () {
@@ -64,12 +64,12 @@ Route::group(['prefix' => 'api'], function () {
     Route::resource('usermanage', 'UserManageController@show');
     Route::get('usermanage/search/{nickname}', 'UserManageController@search');
     Route::resource('usermanage/delete', 'UserManageController@destroy');
-    //paper
-    Route::resource('paper/delete', 'PaperController@destroy');
     //pressure
     Route::resource('pressure', 'PressureController@show');
+    Route::get('pressure/delete/{id}', 'PressureController@destroy');
     //sugar
     Route::resource('sugar', 'SugarController@show');
+    Route::get('sugar/delete/{id}', 'SugarController@destroy');
     //follow
     Route::resource('follow', 'FollowController@follow');
     Route::resource('unfollow', 'FollowController@unfollow');
@@ -83,6 +83,6 @@ Route::group(['prefix' => 'api'], function () {
     Route::resource('line/sugar', 'LineController@set_sugar_line');
     Route::resource('line/get', 'LineController@get');
     //statistics
-    Route::resource('statistics','StatisticsController@index');
+    Route::resource('statistics', 'StatisticsController@index');
 
 });

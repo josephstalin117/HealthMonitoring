@@ -94,6 +94,22 @@ class SugarController extends Controller {
         return redirect('/sugars');
     }
 
+    public function destroy(Request $request, $id) {
+
+        try {
+            $sugar = Sugar::findOrFail($id);
+            $sugar->delete();
+            $response = [
+                "status" => "success",
+            ];
+
+            $request->session()->flash('success', '删除成功');
+            return Response::json($response, 200);
+        } catch (\Exception $e) {
+            return Response::json("{}", 404);
+        }
+    }
+
     private function getLine() {
 
         $line_pressure_high = Line::where('name', Config::get('constants.LINE_PRESSURE_HIGH'))->first();

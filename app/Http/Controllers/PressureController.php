@@ -141,4 +141,20 @@ class PressureController extends Controller {
             return false;
         }
     }
+
+    public function destroy(Request $request, $id) {
+
+        try {
+            $pressure = Pressure::findOrFail($id);
+            $pressure->delete();
+            $response = [
+                "status" => "success",
+            ];
+
+            $request->session()->flash('success', '删除成功');
+            return Response::json($response, 200);
+        } catch (\Exception $e) {
+            return Response::json("{}", 404);
+        }
+    }
 }
