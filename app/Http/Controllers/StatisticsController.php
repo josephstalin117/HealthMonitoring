@@ -28,7 +28,6 @@ class StatisticsController extends Controller {
             foreach ($users as $user) {
 
                 $nickname = $user->profile->nickname;
-                //@todo 添加年龄
                 $max_high = DB::table('pressures')->where('user_id', $user->id)->max('high');
                 $min_low = DB::table('pressures')->where('user_id', $user->id)->min('low');
                 $max_sugar = DB::table('sugars')->where('user_id', $user->id)->max('sugar');

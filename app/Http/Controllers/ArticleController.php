@@ -77,8 +77,6 @@ class ArticleController extends Controller {
 
     }
 
-
-    //@todo
     public function store(Request $request) {
 
         $this->authorize('userManage', Auth::user());
