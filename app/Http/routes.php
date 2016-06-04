@@ -86,6 +86,7 @@ Route::group(['prefix' => 'api'], function () {
     //message
     Route::get('message/send/to_user_id/{to_user_id}/content/{content}', 'MessageController@send');
     Route::resource('message/delete', 'MessageController@destroy');
+    Route::resource('message/check', 'MessageController@check');
     //line
     Route::resource('line/pressure/high', 'LineController@set_pressure_high_line');
     Route::resource('line/pressure/low', 'LineController@set_pressure_low_line');

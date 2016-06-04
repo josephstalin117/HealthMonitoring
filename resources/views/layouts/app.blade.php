@@ -105,6 +105,7 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-expanded="false">
                                 消息<span class="caret"></span>
+                                <p id="unread"></p>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
@@ -145,6 +146,23 @@
 @yield('content')
 
         <!-- JavaScripts -->
+
+<script>
+    //获取前端请求的页面
+    $(function () {
+        $.ajax({
+            url: "{{url('/api/message/check')}}",
+            dataType: "json",
+            method: "get",
+            success: function (data) {
+                if ("success" == data.status) {
+                    $("#unread").text(data.unread);
+                } else {
+                }
+            }
+        });
+    });
+</script>
 
 {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
 </body>
