@@ -86,13 +86,16 @@ class PressureController extends Controller {
 
         $line = $this->getLine();
 
-        if ($pressure->high > $line['high']) {
+        if ($line) {
+            if ($pressure->high > $line['high']) {
 
-            $this->sendWarning(Config::get('constants.LINE_PRESSURE_HIGH'));
-        }
+                $this->sendWarning(Config::get('constants.LINE_PRESSURE_HIGH'));
+            }
 
-        if ($pressure->low < $line['low']) {
-            $this->sendWarning(Config::get('constants.LINE_PRESSURE_LOW'));
+            if ($pressure->low < $line['low']) {
+                $this->sendWarning(Config::get('constants.LINE_PRESSURE_LOW'));
+            }
+
         }
 
         $request->session()->flash('success', '新增成功');
@@ -116,16 +119,20 @@ class PressureController extends Controller {
     }
 
     private function getLine() {
-
         $line_pressure_high = Line::where('name', Config::get('constants.LINE_PRESSURE_HIGH'))->first();
         $line_pressure_low = Line::where('name', Config::get('constants.LINE_PRESSURE_LOW'))->first();
         $line_sugar = Line::where('name', Config::get('constants.LINE_SUGAR'))->first();
 
-        $line = array(
-            'high' => $line_pressure_high->line,
-            'low' => $line_pressure_low->line,
-            'sugar' => $line_sugar->line,
-        );
+        if ($line_pressure_high && $line_pressure_low && $line_sugar) {
+
+            $line = array(
+                'high' => $line_pressure_high->line,
+                'low' => $line_pressure_low->line,
+                'sugar' => $line_sugar->line,
+            );
+        } else {
+            return false;
+        }
 
         return $line;
     }

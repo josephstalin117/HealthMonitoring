@@ -86,8 +86,10 @@ class SugarController extends Controller {
 
         $line = $this->getLine();
 
-        if ($sugar->sugar > $line['sugar']) {
-            $this->sendWarning(Config::get('constants.LINE_SUGAR'));
+        if ($line) {
+            if ($sugar->sugar > $line['sugar']) {
+                $this->sendWarning(Config::get('constants.LINE_SUGAR'));
+            }
         }
 
         $request->session()->flash('success', '新增成功');
@@ -116,11 +118,16 @@ class SugarController extends Controller {
         $line_pressure_low = Line::where('name', Config::get('constants.LINE_PRESSURE_LOW'))->first();
         $line_sugar = Line::where('name', Config::get('constants.LINE_SUGAR'))->first();
 
-        $line = array(
-            'high' => $line_pressure_high->name,
-            'low' => $line_pressure_low->line,
-            'sugar' => $line_sugar->line,
-        );
+        if ($line_pressure_high && $line_pressure_low && $line_sugar) {
+
+            $line = array(
+                'high' => $line_pressure_high->name,
+                'low' => $line_pressure_low->line,
+                'sugar' => $line_sugar->line,
+            );
+        } else {
+            return false;
+        }
 
         return $line;
     }
